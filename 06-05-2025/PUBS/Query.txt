@@ -1,0 +1,98 @@
+1.Print all the titles names
+
+SELECT title
+FROM pubs.dbo.titles;
+
+2.Print all the titles that have been published by 1389
+
+SELECT title
+FROM pubs.dbo.titles
+WHERE pub_id = '1389';
+
+3.Print the books that have price in range of 10 to 15
+
+SELECT title, price
+FROM pubs.dbo.titles
+WHERE price BETWEEN 10 AND 15;
+
+4.Print those books that have no price
+
+SELECT title
+FROM pubs.dbo.titles
+WHERE price IS NULL;
+
+5.Print the book names that starts with 'The'
+
+SELECT title
+FROM pubs.dbo.titles
+WHERE title LIKE 'The%';
+
+6.Print the book names that do not have 'v' in their name
+
+SELECT title
+FROM pubs.dbo.titles
+WHERE title NOT LIKE '%v%';
+
+7.Print the books sorted by the royalty
+
+SELECT t.title , t.royalty
+FROM pubs.dbo.titles t
+ORDER BY t.royalty DESC;
+
+8.Print the books sorted by publisher in descending then by types in ascending then by price in descending
+
+SELECT t.title, t.pub_id, t.type, t.price
+FROM pubs.dbo.titles t
+ORDER BY t.pub_id DESC, t.type ASC, t.price DESC;
+
+9.Print the average price of books in every type
+
+SELECT t.type, AVG(t.price) AS average_price
+FROM pubs.dbo.titles t
+GROUP BY t.type;
+
+10.print all the types in unique
+
+SELECT DISTINCT t.type
+FROM pubs.dbo.titles t;
+
+11.Print the first 2 costliest books
+
+SELECT TOP 2 t.title, t.price
+FROM pubs.dbo.titles t
+ORDER BY t.price DESC;
+
+12.Print books that are of type business and have price less than 20 which also have advance greater than 7000
+
+SELECT t.title, t.type, t.price, t.advance
+FROM pubs.dbo.titles t
+WHERE t.type = 'business'
+  AND t.price < 20
+  AND t.advance > 7000;
+
+13.Select those publisher id and number of books which have price between 15 to 25 and have 'It' in its name. Print only those which have count greater than 2. Also sort the result in ascending order of count
+
+SELECT t.pub_id, COUNT(*) AS book_count
+FROM pubs.dbo.titles t
+WHERE t.price BETWEEN 15 AND 25
+  AND t.title LIKE '%It%'
+GROUP BY t.pub_id
+HAVING COUNT(*) > 2
+ORDER BY book_count ASC;
+
+14.Print the Authors who are from 'CA'
+
+SELECT CONCAT(a.au_fname, ' ', a.au_lname) AS full_name
+FROM pubs.dbo.authors a
+WHERE a.state = 'CA';
+
+15.Print the count of authors from every state
+
+SELECT a.state, COUNT(*) AS author_count
+FROM pubs.dbo.authors a
+GROUP BY a.state
+ORDER BY author_count DESC;
+
+
+
+
