@@ -1,0 +1,42 @@
+Master Tables
+
+1.Category
+CategoryId, CategoryName, CreatedAt, UpdatedAt
+
+2.Format
+FormatId, FormatName, CreatedAt, UpdatedAt
+
+3.Movie
+MovieId, Title, CategoryId, CreatedAt, UpdatedAt
+
+4.MemberType
+TypeId, TypeName, MaxRentals, CreatedAt, UpdatedAt
+
+Entity Tables
+
+1.Member
+MemberId, Name, Phone, FavoriteCategoryId, TypeId, CreatedAt, UpdatedAt
+
+2.Dependent
+DependentId, MemberId, Name, HasActiveRental, CreatedAt, UpdatedAt
+
+3.User
+UserId, Email, PasswordHash, Role, MemberId, DependentId, CreatedAt, UpdatedAt
+
+
+4.MovieFormat
+MovieId, FormatId, CreatedAt, UpdatedAt
+
+5.MovieInventory
+MovieInventoryId , MovieId , FormatId , StockQuantity , AvailableQuantity , CreatedAt , UpdatedAt
+
+Transactional Tables
+
+1.RentalTransaction
+RentalId, RenterType (Member/Dependent), RenterId, MovieId, RentalDate, DueDate, ReturnDate, Status, CreatedAt, UpdatedAt
+
+2.Payment
+PaymentId, MemberId, Amount, PaymentDate, PaymentMethod, Status, CreatedAt, UpdatedAt
+
+3.Refunds
+RefundId, PaymentId, RefundAmount, RefundDate, Reason, CreatedAt, UpdatedAt
