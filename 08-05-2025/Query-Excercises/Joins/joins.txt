@@ -1,0 +1,92 @@
+Website Url: https://pgexercises.com/questions/joins
+
+1.How can you produce a list of the start times for bookings by members named 'David Farrell'?
+
+QUERY : SELECT b.starttime 
+	FROM 
+		cd.bookings b
+		JOIN cd.members m
+			ON m.memid = b.memid
+	WHERE
+		m.firstname='David' 
+		AND m.surname='Farrell';  
+
+2.How can you produce a list of the start times for bookings for tennis courts, for the date '2012-09-21'? Return a list of start time and facility name pairings, ordered by the time.
+
+QUERY : SELECT b.starttime , f.name
+	FROM 
+		cd.bookings b
+		JOIN cd.facilities f
+			ON f.facid = b.facid
+	WHERE
+		f.name in ('Tennis Court 2','Tennis Court 1') AND
+		b.starttime >= '2012-09-21' AND
+		b.starttime < '2012-09-22'
+ORDER BY b.starttime;            
+
+3.How can you output a list of all members who have recommended another member? Ensure that there are no duplicates in the list, and that results are ordered by (surname, firstname).
+
+QUERY : SELECT DISTINCT r.firstname as firstname, r.surname as surname
+	FROM 
+		cd.members m
+		JOIN cd.members r
+			ON r.memid = m.recommendedby
+ORDER BY surname, firstname;    
+
+4.How can you output a list of all members, including the individual who recommended them (if any)? Ensure that results are ordered by (surname, firstname).
+
+QUERY : SELECT m.firstname AS memfname, m.surname AS memsname, r.firstname AS recfname, r.surname AS recsname
+	FROM
+		cd.members m
+		LEFT JOIN cd.members r
+			ON r.memid = m.recommendedby
+ORDER BY  memsname , memfname ;          
+
+5.How can you produce a list of all members who have used a tennis court? Include in your output the name of the court, and the name of the member formatted as a single column. Ensure no duplicate data, and order by the member name followed by the facility name.
+
+QUERY : SELECT DISTINCT m.firstname || ' ' || m.surname AS member, f.name AS facility
+	FROM 
+		cd.members m
+		JOIN cd.bookings b
+			ON m.memid = b.memid
+		JOIN cd.facilities f
+			ON b.facid = f.facid
+	WHERE
+		f.name in ('Tennis Court 2','Tennis Court 1')
+ORDER BY member, facility       
+
+6.How can you produce a list of bookings on the day of 2012-09-14 which will cost the member (or guest) more than $30? Remember that guests have different costs to members (the listed costs are per half-hour 'slot'), and the guest user is always ID 0. Include in your output the name of the facility, the name of the member formatted as a single column, and the cost. Order by descending cost, and do not use any subqueries.
+
+QUERY : SELECT m.firstname || ' ' || m.surname AS member, 
+	f.name AS facility, 
+	case 
+		when m.memid = 0 then
+			b.slots*f.guestcost
+		else
+			b.slots*f.membercost
+	end AS cost
+        FROM
+                cd.members m                
+                inner JOIN cd.bookings b
+                        ON m.memid = b.memid
+                inner JOIN cd.facilities f
+                        ON b.facid = f.facid
+        WHERE
+		b.starttime >= '2012-09-14' AND 
+		b.starttime < '2012-09-15' AND (
+			(m.memid = 0 and b.slots*f.guestcost > 30) OR
+			(m.memid != 0 and b.slots*f.membercost > 30)
+		)
+ORDER BY cost DESC;    
+
+7.How can you output a list of all members, including the individual who recommended them (if any), without using any joins? Ensure that there are no duplicates in the list, and that each firstname + surname pairing is formatted as a column and ordered.
+
+QUERY : SELECT DISTINCT m.firstname || ' ' ||  m.surname as member,
+	(SELECT r.firstname || ' ' || r.surname as recommender 
+		FROM cd.members r 
+		WHERE r.memid = m.recommendedby
+	)
+	FROM 
+		cd.members m
+ORDER BY member;          
+
