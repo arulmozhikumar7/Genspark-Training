@@ -1,0 +1,412 @@
+~/Desktop/GenSpark/20-05-2025/Collections/EmployeeApp (main)
+$ dotnet run
+
+Select Task:
+ 1 - Add New Employee to System
+ 2 - Add Employee to Promotion List
+ 3 - Find Promotion Position by Name
+ 4 - Display Current List Capacity
+ 5 - Trim Excess Capacity
+ 6 - Display Sorted Promoted Employee List
+ 7 - Display  Employee List
+ 8 - Sort Employees
+ 9 - Find Employee by Id
+10 - Find Employees by Name
+11 - Find Employees Older Than Given
+12 - Update Employee by Id
+13 - Delete Employee by Id
+14 - Exit
+Enter your choice: 1
+How many employees do you want to add? 3
+
+Adding employee 1 of 3:
+Enter Employee ID (integer): 1
+Enter Employee Name: Arul
+Enter Employee Age: 21
+Enter Employee Salary: 10000
+Employee "Arul" added successfully!
+
+Adding employee 2 of 3:
+Enter Employee ID (integer): 2
+Enter Employee Name: Arul mozhi
+Enter Employee Age: 20
+Enter Employee Salary: 10000
+Employee "Arul mozhi" added successfully!
+
+Adding employee 3 of 3:
+Enter Employee ID (integer): 3
+Enter Employee Name: Cristiano Ronaldo
+Enter Employee Age: 40
+Enter Employee Salary: 1000000
+Employee "Cristiano Ronaldo" added successfully!
+
+Select Task:
+ 1 - Add New Employee to System
+ 2 - Add Employee to Promotion List
+ 3 - Find Promotion Position by Name
+ 4 - Display Current List Capacity
+ 5 - Trim Excess Capacity
+ 6 - Display Sorted Promoted Employee List
+ 7 - Display  Employee List
+ 8 - Sort Employees
+ 9 - Find Employee by Id
+10 - Find Employees by Name
+11 - Find Employees Older Than Given
+12 - Update Employee by Id
+13 - Delete Employee by Id
+14 - Exit
+Enter your choice: 2
+Enter employee names to add to promotion list (blank to stop):
+Arul
+Employee "Arul" added to promotion list.
+Arul mozhi
+Employee "Arul mozhi" added to promotion list.
+Cristiano Ronaldo
+Employee "Cristiano Ronaldo" added to promotion list.
+
+
+Select Task:
+ 1 - Add New Employee to System
+ 2 - Add Employee to Promotion List
+ 3 - Find Promotion Position by Name
+ 4 - Display Current List Capacity
+ 5 - Trim Excess Capacity
+ 6 - Display Sorted Promoted Employee List
+ 7 - Display  Employee List
+ 8 - Sort Employees
+ 9 - Find Employee by Id
+10 - Find Employees by Name
+11 - Find Employees Older Than Given
+12 - Update Employee by Id
+13 - Delete Employee by Id
+14 - Exit
+Enter your choice: 4
+Current Capacity: 4
+Number of Employees in Promotion List: 3
+
+Select Task:
+ 1 - Add New Employee to System
+ 2 - Add Employee to Promotion List
+ 3 - Find Promotion Position by Name
+ 4 - Display Current List Capacity
+ 5 - Trim Excess Capacity
+ 6 - Display Sorted Promoted Employee List
+ 7 - Display  Employee List
+ 8 - Sort Employees
+ 9 - Find Employee by Id
+10 - Find Employees by Name
+11 - Find Employees Older Than Given
+12 - Update Employee by Id
+13 - Delete Employee by Id
+14 - Exit
+Enter your choice: 5
+Capacity before trimming: 4
+Capacity after trimming: 4
+
+Select Task:
+ 1 - Add New Employee to System
+ 2 - Add Employee to Promotion List
+ 3 - Find Promotion Position by Name
+ 4 - Display Current List Capacity
+ 5 - Trim Excess Capacity
+ 6 - Display Sorted Promoted Employee List
+ 7 - Display  Employee List
+ 8 - Sort Employees
+ 9 - Find Employee by Id
+10 - Find Employees by Name
+11 - Find Employees Older Than Given
+12 - Update Employee by Id
+13 - Delete Employee by Id
+14 - Exit
+Enter your choice: 6
+Promoted employee list:
+Arul
+Arul mozhi
+Cristiano Ronaldo
+
+Select Task:
+ 1 - Add New Employee to System
+ 2 - Add Employee to Promotion List
+ 3 - Find Promotion Position by Name
+ 4 - Display Current List Capacity
+ 5 - Trim Excess Capacity
+ 6 - Display Sorted Promoted Employee List
+ 7 - Display  Employee List
+ 8 - Sort Employees
+ 9 - Find Employee by Id
+10 - Find Employees by Name
+11 - Find Employees Older Than Given
+12 - Update Employee by Id
+13 - Delete Employee by Id
+14 - Exit
+Enter your choice: 7
+
+All Employees:
+ID Name Age Salary
+----------------------------------------
+Employee ID : 1
+Name : Arul
+Age : 21
+Salary : 10000
+Employee ID : 2
+Name : Arul mozhi
+Age : 20
+Salary : 10000
+Employee ID : 3
+Name : Cristiano Ronaldo
+Age : 40
+Salary : 1000000
+
+Select Task:
+ 1 - Add New Employee to System
+ 2 - Add Employee to Promotion List
+ 3 - Find Promotion Position by Name
+ 4 - Display Current List Capacity
+ 5 - Trim Excess Capacity
+ 6 - Display Sorted Promoted Employee List
+ 7 - Display  Employee List
+ 8 - Sort Employees
+ 9 - Find Employee by Id
+10 - Find Employees by Name
+11 - Find Employees Older Than Given
+12 - Update Employee by Id
+13 - Delete Employee by Id
+14 - Exit
+Enter your choice: 8
+
+Sort Employees By:
+1. Name
+2. Salary
+3. Age
+4. ID
+Enter choice:
+3
+Employees sorted by Age.
+
+All Employees:
+ID Name Age Salary
+----------------------------------------
+Employee ID : 2
+Name : Arul mozhi
+Age : 20
+Salary : 10000
+Employee ID : 1
+Name : Arul
+Age : 21
+Salary : 10000
+Employee ID : 3
+Name : Cristiano Ronaldo
+Age : 40
+Salary : 1000000
+
+Select Task:
+ 1 - Add New Employee to System
+ 2 - Add Employee to Promotion List
+ 3 - Find Promotion Position by Name
+ 4 - Display Current List Capacity
+ 5 - Trim Excess Capacity
+ 6 - Display Sorted Promoted Employee List
+ 7 - Display  Employee List
+ 8 - Sort Employees
+ 9 - Find Employee by Id
+10 - Find Employees by Name
+11 - Find Employees Older Than Given
+12 - Update Employee by Id
+13 - Delete Employee by Id
+14 - Exit
+Enter your choice: 8
+
+Sort Employees By:
+1. Name
+2. Salary
+3. Age
+4. ID
+Enter choice:
+2
+Employees sorted by Salary (descending).
+
+All Employees:
+ID Name Age Salary
+----------------------------------------
+Employee ID : 3
+Name : Cristiano Ronaldo
+Age : 40
+Salary : 1000000
+Employee ID : 2
+Name : Arul mozhi
+Age : 20
+Salary : 10000
+Employee ID : 1
+Name : Arul
+Age : 21
+Salary : 10000
+
+Select Task:
+ 1 - Add New Employee to System
+ 2 - Add Employee to Promotion List
+ 3 - Find Promotion Position by Name
+ 4 - Display Current List Capacity
+ 5 - Trim Excess Capacity
+ 6 - Display Sorted Promoted Employee List
+ 7 - Display  Employee List
+ 8 - Sort Employees
+ 9 - Find Employee by Id
+10 - Find Employees by Name
+11 - Find Employees Older Than Given
+12 - Update Employee by Id
+13 - Delete Employee by Id
+14 - Exit
+Enter your choice: 9
+Enter Employee ID to search (positive integer): 1
+
+Employee Details:
+ID: 1
+Name: Arul
+Age: 21
+Salary: 10000
+
+Select Task:
+ 1 - Add New Employee to System
+ 2 - Add Employee to Promotion List
+ 3 - Find Promotion Position by Name
+ 4 - Display Current List Capacity
+ 5 - Trim Excess Capacity
+ 6 - Display Sorted Promoted Employee List
+ 7 - Display  Employee List
+ 8 - Sort Employees
+ 9 - Find Employee by Id
+10 - Find Employees by Name
+11 - Find Employees Older Than Given
+12 - Update Employee by Id
+13 - Delete Employee by Id
+14 - Exit
+Enter your choice: 10
+Enter employee name to search: Arul
+
+Found 2 employee(s) matching "Arul":
+------------------------------
+ID: 2
+Name: Arul mozhi
+Age: 20
+Salary: 10000
+------------------------------
+ID: 1
+Name: Arul
+Age: 21
+Salary: 10000
+
+Select Task:
+ 1 - Add New Employee to System
+ 2 - Add Employee to Promotion List
+ 3 - Find Promotion Position by Name
+ 4 - Display Current List Capacity
+ 5 - Trim Excess Capacity
+ 6 - Display Sorted Promoted Employee List
+ 7 - Display  Employee List
+ 8 - Sort Employees
+ 9 - Find Employee by Id
+10 - Find Employees by Name
+11 - Find Employees Older Than Given
+12 - Update Employee by Id
+13 - Delete Employee by Id
+14 - Exit
+Enter your choice: 11
+Enter Employee ID to compare age: 1   
+
+Employees older than Arul (Age: 21):
+-----------------------------
+ID: 3
+Name: Cristiano Ronaldo
+Age: 40
+Salary: 1000000
+
+Select Task:
+ 1 - Add New Employee to System
+ 2 - Add Employee to Promotion List
+ 3 - Find Promotion Position by Name
+ 4 - Display Current List Capacity
+ 5 - Trim Excess Capacity
+ 6 - Display Sorted Promoted Employee List
+ 7 - Display  Employee List
+ 8 - Sort Employees
+ 9 - Find Employee by Id
+10 - Find Employees by Name
+11 - Find Employees Older Than Given
+12 - Update Employee by Id
+13 - Delete Employee by Id
+14 - Exit
+Enter your choice: 12
+Enter the Employee ID to update: 1
+
+Current details of Employee ID 1:
+Name: Arul, Age: 21, Salary: 10000
+Enter new name (leave blank to keep unchanged):
+Enter new age (leave blank to keep unchanged): 20
+Enter new salary (leave blank to keep unchanged):
+Employee details updated successfully.
+
+Select Task:
+ 1 - Add New Employee to System
+ 2 - Add Employee to Promotion List
+ 3 - Find Promotion Position by Name
+ 4 - Display Current List Capacity
+ 5 - Trim Excess Capacity
+ 6 - Display Sorted Promoted Employee List
+ 7 - Display  Employee List
+ 8 - Sort Employees
+ 9 - Find Employee by Id
+10 - Find Employees by Name
+11 - Find Employees Older Than Given
+12 - Update Employee by Id
+13 - Delete Employee by Id
+14 - Exit
+Enter your choice: 13
+Enter the Employee ID to delete: 1
+Employee with ID 1 (Arul) has been successfully deleted.
+
+Select Task:
+ 1 - Add New Employee to System
+ 2 - Add Employee to Promotion List
+ 3 - Find Promotion Position by Name
+ 4 - Display Current List Capacity
+ 5 - Trim Excess Capacity
+ 6 - Display Sorted Promoted Employee List
+ 7 - Display  Employee List
+ 8 - Sort Employees
+ 9 - Find Employee by Id
+10 - Find Employees by Name
+11 - Find Employees Older Than Given
+12 - Update Employee by Id
+13 - Delete Employee by Id
+14 - Exit
+Enter your choice: 7
+
+All Employees:
+ID Name Age Salary
+----------------------------------------
+Employee ID : 3
+Name : Cristiano Ronaldo
+Age : 40
+Salary : 1000000
+Employee ID : 2
+Name : Arul mozhi
+Age : 20
+Salary : 10000
+
+Select Task:
+ 1 - Add New Employee to System
+ 2 - Add Employee to Promotion List
+ 3 - Find Promotion Position by Name
+ 4 - Display Current List Capacity
+ 5 - Trim Excess Capacity
+ 6 - Display Sorted Promoted Employee List
+ 7 - Display  Employee List
+ 8 - Sort Employees
+ 9 - Find Employee by Id
+10 - Find Employees by Name
+11 - Find Employees Older Than Given
+12 - Update Employee by Id
+13 - Delete Employee by Id
+14 - Exit
+Enter your choice: 14
+Exiting...
