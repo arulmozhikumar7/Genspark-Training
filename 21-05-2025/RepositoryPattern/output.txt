@@ -1,0 +1,55 @@
+~/Desktop/GenSpark/21-05-2025/RepositoryPattern (main)
+$ dotnet run
+
+=== Employee Management System ===
+1. Add Employee
+2. Search Employee
+3. List All Employees
+4. Exit
+Enter your choice: 1
+Enter employee name: Arul
+Enter employee age: 21
+Enter employee salary: 10000
+Employee added successfully with ID: 101
+
+=== Employee Management System ===
+1. Add Employee
+2. Search Employee
+3. List All Employees
+4. Exit
+Enter your choice: 2
+Enter Employee ID to search (or press Enter to skip):
+Enter Name to search (or press Enter to skip): Arul
+Enter Min Age (or press Enter to skip):
+Enter Max Age (or press Enter to skip):
+Enter Min Salary (or press Enter to skip):
+Enter Max Salary (or press Enter to skip):
+
+Found 1 employee(s):
+------------------------------
+Employee ID : 101
+Name : Arul
+Age : 21
+Salary : 10000
+
+=== Employee Management System ===
+1. Add Employee
+2. Search Employee
+3. List All Employees
+4. Exit
+Enter your choice: 3
+
+Listing all 1 employee(s):
+------------------------------
+Employee ID : 101
+Name : Arul
+Age : 21
+Salary : 10000
+
+=== Employee Management System ===
+1. Add Employee
+2. Search Employee
+3. List All Employees
+4. Exit
+Enter your choice: 4
+Exiting application...

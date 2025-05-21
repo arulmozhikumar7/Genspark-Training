@@ -1,0 +1,80 @@
+~/Desktop/GenSpark/21-05-2025/AppointmentMaker (main)
+$ dotnet run
+
+Appointment Manager
+1. Add Appointment
+2. List Appointments
+3. Search Appointments
+4. Search Appointments with filters
+5. Exit
+Select option:
+1
+Enter patient name:
+Arul
+Enter age:
+21
+Enter appointment date (dd-MM-yyyy): 21-05-2025
+Enter reason for appointment:
+xyz
+Appointment added successfully.
+
+Appointment Manager
+1. Add Appointment
+2. List Appointments
+3. Search Appointments
+4. Search Appointments with filters
+5. Exit
+Select option:
+2
+All Appointments:
+[101] Arul | Age: 21 | Date: 21-05-2025 | Reason: xyz
+
+Appointment Manager
+1. Add Appointment
+2. List Appointments
+3. Search Appointments
+4. Search Appointments with filters
+5. Exit
+Select option:
+3
+Search by:
+1. Name
+2. Date
+3. Age
+Choose search criteria:
+1
+Enter name to search:
+Arul
+Search Results:
+[101] Arul | Age: 21 | Date: 21-05-2025 | Reason: xyz
+
+Appointment Manager
+1. Add Appointment
+2. List Appointments
+3. Search Appointments
+4. Search Appointments with filters
+5. Exit
+Select option:
+4
+
+--- Search Appointments ---
+Enter patient name (leave empty to skip):
+
+Enter appointment date (dd-MM-yyyy) (leave empty to skip):
+
+Enter minimum age (leave empty to skip):
+20
+Enter maximum age (leave empty to skip):
+22
+Search Results:
+[101] Arul | Age: 21 | Date: 21-05-2025 | Reason: xyz
+
+Appointment Manager
+1. Add Appointment
+2. List Appointments
+3. Search Appointments
+4. Search Appointments with filters
+5. Exit
+Select option:
+5
+Exiting application.
