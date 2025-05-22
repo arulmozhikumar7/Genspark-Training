@@ -1,0 +1,11 @@
+~/Desktop/GenSpark/22-05-2025/SOLID (main)
+$ dotnet run
+Added player: Cristiano Ronaldo
+[NOTIFICATION]: Player 1 scored Hat-trick in match 102!
+[NOTIFICATION]: Player 1 scored Hat-trick in match 103!
+[1] Cristiano Ronaldo - Forward
+Matches Played: 3
+MatchStat(PlayerId: 1, MatchId: 101, Goals: 2, Assists: 1, Passes: 30)
+MatchStat(PlayerId: 1, MatchId: 102, Goals: 3, Assists: 2, Passes: 40)
+MatchStat(PlayerId: 1, MatchId: 103, Goals: 6, Assists: 8, Passes: 50)
+Total Goals: 11, Total Assists: 11, Total Passes: 120
