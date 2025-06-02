@@ -1,0 +1,14 @@
+HEADER       PAYLOAD          SIGNATURE
+{alg, typ} . {claims} . hash(header + payload + secret)
+
+| Part      | Purpose                                          | Security Role                                          |
+| --------- | ------------------------------------------------ | ------------------------------------------------------ |
+| Header    | Declares the type and algorithm                  | Helps token processors decode and verify               |
+| Payload   | Carries the actual claims (user info, role, exp) | Contains the data you trust (but is not encrypted)     |
+| Signature | Confirms token is untampered and valid           | Protects against forgery or modification               |
+
+
+| Token Type        | Purpose               | Expiration Time       | Storage Location                  | Sent Where                        |
+| ----------------- | --------------------- | --------------------- | --------------------------------- | --------------------------------- |
+|   Access Token    | Access protected APIs | Short (minutes/hours) | Local Storage / Memory (browser)  | HTTP Header Authorization: Bearer |
+|   Refresh Token   | Get new access tokens | Long (days/weeks)     | HttpOnly Cookie or Secure Storage | Sent to refresh endpoint only     |
