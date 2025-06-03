@@ -1,0 +1,13 @@
+namespace HospitalManagementAPI.Dtos
+{
+    public class SpecializationDto
+{
+    public int Id { get; set; }
+    public string Name { get; set; } = string.Empty;
+
+    public string Description { get; set; } = string.Empty;
+
+    public List<DoctorDto>? Doctors { get; set; } 
+}
+
+}
