@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>SignalR Minimal Test</title>
+<script src="https://cdn.jsdelivr.net/npm/@microsoft/signalr@8.0.7/dist/browser/signalr.min.js"></script>
+</head>
+<body>
+<h1>SignalR Test</h1>
+<div id="notifications"></div>
+<script>
+  const notificationsDiv = document.getElementById('notifications');
+  const connection = new signalR.HubConnectionBuilder()
+    .withUrl('http://localhost:5227/notificationhub', { withCredentials: true })
+    .withAutomaticReconnect()
+    .build();
+
+  connection.on('NewCampAdded', (camp) => {
+    const msg = `New camp: ${camp.title} by Dr. ${camp.doctorName}`;
+    const div = document.createElement('div');
+    div.textContent = msg;
+    notificationsDiv.prepend(div);
+  });
+
+  connection.start().catch(err => console.error(err));
+</script>
+</body>
+</html>

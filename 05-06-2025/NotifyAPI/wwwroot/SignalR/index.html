@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document Upload Notifications</title>
+   <script src="https://cdn.jsdelivr.net/npm/@microsoft/signalr@8.0.7/dist/browser/signalr.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 2rem;
+            background-color: #f4f4f4;
+        }
+
+        h2 {
+            color: #2f514a;
+        }
+
+        .notification {
+            background-color: #ffffff;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-left: 5px solid #2f514a;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .notification a {
+            color: #0066cc;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .notification a:hover {
+            text-decoration: underline;
+        }
+
+        .timestamp {
+            font-size: 0.85rem;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <h2>📂 Live Document Upload Notifications</h2>
+    <div id="notifications"></div>
+
+    <script>
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/notificationhub") 
+            .build();
+
+        connection.on("NewDocumentUploaded", (doc) => {
+            const container = document.getElementById("notifications");
+
+            const div = document.createElement("div");
+            div.classList.add("notification");
+
+            const uploadedAt = new Date(doc.uploadedAt).toLocaleString();
+
+            div.innerHTML = `
+                <p><strong>New Document Uploaded:</strong> ${doc.fileName}</p>
+                <p>Uploaded By: ${doc.uploadedBy}</p>
+                <p class="timestamp">🕒 ${uploadedAt}</p>
+                <p><a href="${doc.filePath}" target="_blank">📥 Download/View Document</a></p>
+            `;
+
+            container.prepend(div);
+        });
+
+        connection.start().catch(err => {
+            console.error("SignalR connection error:", err);
+        });
+    </script>
+</body>
+</html>
