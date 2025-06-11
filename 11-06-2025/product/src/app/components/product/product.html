@@ -1,0 +1,75 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-4">
+      
+      <!-- Loading State -->
+      <div *ngIf="loading" class="text-center">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-2">Loading product...</p>
+      </div>
+
+      <!-- Error State -->
+      <div *ngIf="error" class="alert alert-danger">
+        <i class="bi bi-exclamation-triangle me-2"></i>
+        Failed to load product. Please try again.
+        <button class="btn btn-sm btn-outline-danger ms-2" (click)="loadProduct()">
+          Retry
+        </button>
+      </div>
+
+      <!-- Product Card -->
+      <div *ngIf="product && !loading && !error" class="card shadow-lg product-card">
+        <img 
+          [src]="product.thumbnail" 
+          [alt]="product.title"
+          class="card-img-top product-image"
+        >
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-start mb-2">
+            <h5 class="card-title mb-0">{{ product.title }}</h5>
+            <span class="badge bg-secondary category-badge">{{ product.category }}</span>
+          </div>
+          
+          <div class="mb-2">
+            <span class="text-warning">
+              <i class="bi bi-star-fill" *ngFor="let star of getStars()"></i>
+              <i class="bi bi-star" *ngFor="let star of getEmptyStars()"></i>
+            </span>
+            <small class="text-muted ms-1">({{ product.rating }})</small>
+          </div>
+
+          <p class="card-text text-muted">{{ product.description }}</p>
+          
+          <div class="price-section mb-3">
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <span class="h4 text-primary mb-0">₹{{ getDiscountedPrice() | number:'1.2-2' }}</span>
+              <span class="text-muted text-decoration-line-through" *ngIf="product.discountPercentage > 0">
+                ₹{{ product.price | number:'1.2-2' }}
+              </span>
+            </div>
+            <span class="badge bg-success discount-badge" *ngIf="product.discountPercentage > 0">
+              {{ product.discountPercentage }}% OFF
+            </span>
+          </div>
+
+          <div class="mb-3">
+            <small class="text-muted stock-info">
+              <i class="bi bi-box-seam me-1"></i>
+              {{ product.stock }} items in stock
+            </small>
+          </div>
+
+          <button 
+            class="btn btn-primary w-100 buy-btn"
+            [disabled]="product.stock === 0"
+            (click)="buyProduct()">
+            <i class="bi bi-cart-plus me-2"></i>
+            {{ product.stock === 0 ? 'Out of Stock' : 'Buy Now' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

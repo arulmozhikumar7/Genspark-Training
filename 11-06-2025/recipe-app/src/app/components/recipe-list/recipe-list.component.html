@@ -1,0 +1,61 @@
+<div class="recipe-container">
+  <div class="header">
+    <h1>Recipe Collection</h1>
+    <div class="actions">
+      <button (click)="loadRecipes()" [disabled]="isLoading()" class="btn btn-primary">
+        {{ isLoading() ? 'Loading...' : 'Load Recipes' }}
+      </button>
+      <button (click)="clearRecipes()" class="btn btn-secondary">
+        Clear Recipes
+      </button>
+    </div>
+  </div>
+
+  @if (isLoading()) {
+    <div class="loading">Loading recipes...</div>
+  } @else if (error()) {
+    <div class="error">
+      <h3>Error loading recipes</h3>
+      <p>{{ error() }}</p>
+      <button (click)="loadRecipes()" class="btn btn-primary">Try Again</button>
+    </div>
+  } @else {
+    @if (recipes().length === 0) {
+      <div class="no-recipes">
+        <h3>No recipes found</h3>
+        <p>Click "Load Recipes" to fetch some delicious recipes!</p>
+      </div>
+    } @else {
+      <div class="recipe-grid">
+        @for (recipe of recipes(); track recipe.id) {
+          <div class="recipe-card">
+            <div class="recipe-image">
+              <img [src]="recipe.image" [alt]="recipe.name" />
+            </div>
+            
+            <div class="recipe-content">
+              <h3 class="recipe-name">{{ recipe.name }}</h3>
+              
+              <div class="recipe-details">
+                <div class="detail-item">
+                  <span class="label">Cuisine:</span>
+                  <span class="value">{{ recipe.cuisine }}</span>
+                </div>
+                
+                <div class="detail-item">
+                  <span class="label">Cooking Time:</span>
+                  <span class="value">{{ getTotalCookingTime(recipe) }} minutes</span>
+                </div>
+              </div>
+              
+              <div class="ingredients-section">
+                <span class="label">Ingredients:</span>
+                <p class="ingredients-text">{{ getIngredientsText(recipe.ingredients) }}</p>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  }
+</div>
