@@ -1,0 +1,27 @@
+<div class="customer-card">
+  <h2>Customer Details</h2>
+  
+  <div class="customer-info">
+    <div class="info-item">
+      <strong>Name:</strong> {{ customer.name }}
+    </div>
+    <div class="info-item">
+      <strong>Email:</strong> {{ customer.email }}
+    </div>
+    <div class="info-item">
+      <strong>Phone:</strong> {{ customer.phone }}
+    </div>
+    <div class="info-item">
+      <strong>Address:</strong> {{ customer.address }}
+    </div>
+  </div>
+
+  <div class="rating-section">
+    <button class="like-btn" (click)="onLike()">
+      👍 {{ likeCount }}
+    </button>
+    <button class="dislike-btn" (click)="onDislike()">
+      👎 {{ dislikeCount }}
+    </button>
+  </div>
+</div>

@@ -1,0 +1,36 @@
+<div class="products-container">
+  <!-- Cart Header -->
+  <header class="cart-header">
+    <h1>Product Store</h1>
+    <div class="cart-section">
+      <div class="cart-icon">
+        🛒
+        <span class="cart-badge">{{ cartCount }}</span>
+      </div>
+      <span class="cart-text">Cart</span>
+    </div>
+  </header>
+
+  <!-- Products Section -->
+  <div class="products-section">
+    <h2>Featured Products</h2>
+    
+    <div class="products-grid">
+      <div class="product-card" *ngFor="let product of products">
+        <div class="product-image-container">
+          <img [src]="product.image" [alt]="product.name" class="product-image">
+        </div>
+        
+        <div class="product-details">
+          <h3 class="product-name">{{ product.name }}</h3>
+          <p class="product-description">{{ product.description }}</p>
+          <div class="product-price">${{ product.price }}</div>
+          
+          <button class="add-to-cart-btn" (click)="addToCart(product)">
+            🛒 Add to Cart
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
