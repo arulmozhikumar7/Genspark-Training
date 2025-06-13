@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Budget Alert Notifications</title>
+  <script src="https://cdn.jsdelivr.net/npm/@microsoft/signalr@8.0.7/dist/browser/signalr.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      padding: 40px;
+    }
+
+    h2 {
+      color: #2f514a;
+    }
+
+    #alerts {
+      margin-top: 20px;
+    }
+
+    .alert {
+      background-color: #fff3cd;
+      border: 1px solid #ffeeba;
+      color: #856404;
+      padding: 12px 16px;
+      margin-bottom: 12px;
+      border-radius: 8px;
+      font-weight: 500;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .alert strong {
+      color: #333;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .logout-btn {
+      padding: 8px 14px;
+      background: #2f514a;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .logout-btn:hover {
+      background-color: #24413a;
+    }
+  </style>
+</head>
+<body>
+
+<div class="top-bar">
+  <h2>📢 Budget Alerts</h2>
+  <button class="logout-btn" onclick="logout()">Logout</button>
+</div>
+
+<div id="alerts"></div>
+
+<script>
+  const BASE_URL = "http://localhost:5169";
+
+  let jwtToken = localStorage.getItem("jwtToken");
+  let refreshToken = localStorage.getItem("refreshToken");
+
+  // Logout logic
+  function logout() {
+    localStorage.removeItem("jwtToken");
+    localStorage.removeItem("refreshToken");
+    window.location.href = "login.html";
+  }
+
+  // Decode JWT
+  function parseJwt(token) {
+    try {
+      const payload = token.split('.')[1];
+      return JSON.parse(atob(payload));
+    } catch {
+      return null;
+    }
+  }
+
+  // Refresh token
+  async function refreshAccessToken() {
+    try {
+      const res = await fetch(`${BASE_URL}/api/v1/Auth/refresh-token`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token: jwtToken, refreshToken })
+      });
+
+      if (!res.ok) {
+        logout();
+        return;
+      }
+
+      const { data } = await res.json();
+      jwtToken = data.token;
+      refreshToken = data.refreshToken;
+
+      localStorage.setItem("jwtToken", jwtToken);
+      localStorage.setItem("refreshToken", refreshToken);
+      console.log("🔄 Token refreshed.");
+    } catch {
+      logout();
+    }
+  }
+
+  // Schedule token refresh 1 minute before expiry
+  function scheduleRefresh() {
+    const decoded = parseJwt(jwtToken);
+    if (!decoded) return logout();
+
+    const expiryTime = decoded.exp * 1000;
+    const currentTime = Date.now();
+    const timeUntilExpiry = expiryTime - currentTime;
+    const refreshTime = timeUntilExpiry - (60 * 1000); // 1 min before expiry
+
+    if (refreshTime <= 0) {
+      refreshAccessToken();
+    } else {
+      setTimeout(refreshAccessToken, refreshTime);
+    }
+  }
+
+  // Check token presence
+  if (!jwtToken || !refreshToken) {
+    alert("You are not logged in!");
+    logout();
+  }
+
+  const decoded = parseJwt(jwtToken);
+  const userId = decoded?.["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
+
+  if (!userId) {
+    alert("Invalid token.");
+    logout();
+  }
+
+  // SignalR connection
+  const connection = new signalR.HubConnectionBuilder()
+    .withUrl(`${BASE_URL}/budgetHub`, {
+      accessTokenFactory: () => jwtToken
+    })
+    .withAutomaticReconnect()
+    .build();
+
+  connection.on("BudgetAlert", function (alert) {
+    const alertBox = document.createElement("div");
+    alertBox.className = "alert";
+
+    const icon =
+      alert.usedPercentage >= 100 ? "❌" :
+      alert.usedPercentage >= 90 ? "⚠️" :
+      alert.usedPercentage >= 50 ? "ℹ️" :
+      "✅";
+
+    alertBox.innerHTML = `
+      <div>${icon} <strong>${alert.message}</strong></div>
+      <div><strong>Category:</strong> ${alert.categoryName}</div>
+      <div><strong>Used:</strong> ₹${alert.usedAmount} / ₹${alert.limitAmount} (${alert.usedPercentage}%)</div>
+      <div><strong>Budget ID:</strong> ${alert.budgetId}</div>
+    `;
+
+    document.getElementById("alerts").prepend(alertBox);
+  });
+
+  // Start SignalR and join user group
+  connection.start()
+    .then(() => {
+      console.log("✅ SignalR connected");
+      return connection.invoke("JoinUserGroup", userId.toString());
+    })
+    .then(() => {
+      console.log("👥 Joined user group:", userId);
+    })
+    .catch(err => {
+      console.error("❌ Connection error:", err);
+      logout();
+    });
+
+  scheduleRefresh();
+</script>
+
+</body>
+</html>
