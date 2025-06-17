@@ -1,0 +1,10 @@
+<!-- Display error if any -->
+<div *ngIf="error$ | async as error" class="error">
+  {{ error }}
+</div>
+
+<!-- Display weather data if available -->
+<app-weather-card
+  *ngIf="weather$ | async as weather"
+  [weather]="weather">
+</app-weather-card>

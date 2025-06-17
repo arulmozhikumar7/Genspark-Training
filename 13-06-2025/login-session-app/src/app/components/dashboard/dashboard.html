@@ -1,0 +1,7 @@
+<div class="dashboard">
+  <h2>Dashboard</h2>
+  @if (user) {
+    <p>Welcome, {{ user.username }}!</p>
+  }
+  <button (click)="logout()">Logout</button>
+</div>

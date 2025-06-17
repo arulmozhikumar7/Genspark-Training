@@ -1,0 +1,16 @@
+.search-container {
+  display: flex;
+  justify-content: center;
+  margin: 16px 0;
+}
+
+input {
+  padding: 8px;
+  width: 200px;
+  margin-right: 8px;
+}
+
+button {
+  padding: 8px 16px;
+  cursor: pointer;
+}
