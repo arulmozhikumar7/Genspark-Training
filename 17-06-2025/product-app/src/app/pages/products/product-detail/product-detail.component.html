@@ -1,0 +1,15 @@
+<a [routerLink]="['/products']" class="back-button">← Back to Products</a>
+
+
+<div *ngIf="error" class="error-message">Invalid product ID.</div>
+
+<div *ngIf="product" class="product-detail">
+  <img [src]="product.thumbnail" alt="" class="product-image" />
+  <div class="product-info">
+    <h1>{{ product.title }}</h1>
+    <p class="description">{{ product.description }}</p>
+    <strong class="price">Price: ${{ product.price }}</strong>
+  </div>
+</div>
+
+<router-outlet></router-outlet>

@@ -1,0 +1,16 @@
+<app-navbar></app-navbar>
+<input
+  #searchBox
+  type="text"
+  [value]="searchTerm"
+  (input)="onSearchChange(searchBox.value)"
+  placeholder="Search products..."
+>
+
+
+<div *ngIf="loading" class="loader">Loading...</div>
+<div *ngIf="!loading && products.length === 0" class="noresult">No results found.</div>
+<div class="grid">
+  <app-product-card *ngFor="let product of products" [product]="product"  (clicked)="navigateToDetail($event)"></app-product-card>
+</div>
+<div infiniteScroll (scrolled)="onScroll()" [infiniteScrollDistance]="2" [infiniteScrollThrottle]="300"></div>

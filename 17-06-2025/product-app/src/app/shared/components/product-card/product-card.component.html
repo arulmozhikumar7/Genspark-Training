@@ -1,0 +1,6 @@
+<div class="card" (click)="onCardClick()">
+  <img [src]="product.thumbnail" alt="Product image" />
+  <h3>{{ product.title }}</h3>
+  <p>{{ product.description }}</p>
+  <span>${{ product.price }}</span>
+</div>
