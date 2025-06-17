@@ -1,0 +1,23 @@
+<input type="text" placeholder="Search products..." [(ngModel)]="search" (ngModelChange)="onSearchChange($event)" />
+
+
+@if (products.length == 0 && !loading) {
+  <p class="end-message">No Results</p>
+}
+
+<div class="product-grid">
+  @for (product of products; track product.id) {
+    <product-card
+      [title]="highlight(product.title)"
+      [thumbnail]="product.thumbnail"
+      [price]="product.price" />
+  }
+</div>
+@if (loading) {
+  <p class="load">Loading...</p>
+}
+@if (!hasMore && products.length > 0) {
+  <p class="end-message">No more products to load</p>
+}
+
+<button class="back-to-top" (click)="scrollToTop()">⬆</button>
