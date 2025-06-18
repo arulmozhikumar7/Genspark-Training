@@ -1,0 +1,106 @@
+
+
+<div class="dashboard-container">
+  <div class="filters">
+    <select class="select" (change)="handleSelectChange($event, 'gender')">
+      <option value="">All Genders</option>
+      <option value="male">Male</option>
+      <option value="female">Female</option>
+    </select>
+
+    <select class="select" (change)="handleSelectChange($event, 'role')">
+      <option value="">All Roles</option>
+      <option value="admin">Admin</option>
+      <option value="user">User</option>
+    </select>
+
+    <select class="select" (change)="handleSelectChange($event, 'state')">
+      <option value="">All States</option>
+      @for (state of availableStates(); track state) {
+        <option [value]="state">{{ state }}</option>
+      }
+    </select>
+
+    <input
+      type="number"
+      class="input"
+      placeholder="Min Age"
+      (input)="handleNumberInput($event, 'minAge')"
+    />
+    <input
+      type="number"
+      class="input"
+      placeholder="Max Age"
+      (input)="handleNumberInput($event, 'maxAge')"
+    />
+  </div>
+  <button class="add-btn" (click)="openAddModal()">➕ Add User</button>
+<div class="modal-overlay" *ngIf="showAddModal()">
+  <div class="modal">
+    <h2>Add New User</h2>
+    <form (ngSubmit)="addUser()" #userForm="ngForm">
+      <input type="text" placeholder="First Name" [(ngModel)]="newUser.firstName" name="firstName" required />
+      <input type="text" placeholder="Last Name" [(ngModel)]="newUser.lastName" name="lastName" required />
+      <input type="number" placeholder="Age" [(ngModel)]="newUser.age" name="age" required />
+      <select [(ngModel)]="newUser.gender" name="gender">
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+      </select>
+      <input type="text" placeholder="Email" [(ngModel)]="newUser.email" name="email" required />
+      <input type="text" placeholder="Phone" [(ngModel)]="newUser.phone" name="phone" required />
+      <input type="text" placeholder="Username" [(ngModel)]="newUser.username" name="username" required />
+      <input type="text" placeholder="City" [(ngModel)]="newUser.address!.city" name="city" />
+     <input type="text" placeholder="State" [(ngModel)]="newUser.address!.state" name="state" />
+
+      <select [(ngModel)]="newUser.role" name="role">
+        <option value="admin">Admin</option>
+        <option value="user">User</option>
+      </select>
+
+      <div class="modal-actions">
+        <button type="submit" class="submit-btn">Add</button>
+        <button type="button" (click)="closeAddModal()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="table-wrapper">
+  <table class="user-table">
+    <thead>
+      <tr>
+        <th>Photo</th>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Gender</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Username</th>
+        <th>Role</th>
+        <th>Location</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (user of filteredUsers(); track user.id) {
+        <tr>
+          <td>
+            <img class="avatar" [src]="user.image" [alt]="user.firstName" />
+          </td>
+          <td>{{ user.firstName }} {{ user.lastName }}</td>
+          <td>{{ user.age }}</td>
+          <td>{{ user.gender }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.phone }}</td>
+          <td>{{ user.username }}</td>
+          <td>{{ user.role || 'N/A' }}</td>
+          <td>{{ user.address.city }}, {{ user.address.state }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+</div>
+<div style="max-width: 800px; margin: 2rem auto;">
+  <canvas #stateChart height="100"></canvas>
+</div>

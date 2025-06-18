@@ -1,0 +1,67 @@
+<div class="form-card">
+      <h2>Template-Driven Form</h2>
+      
+      <form #userForm="ngForm" (ngSubmit)="onSubmit(userForm)">
+        <div class="field">
+          <label>Name *</label>
+          <input
+            type="text"
+            name="name"
+            [(ngModel)]="user.name"
+            #name="ngModel"
+            required
+            minlength="2"
+            [class.error]="name.invalid && name.touched"
+          >
+          <div class="error" *ngIf="name.invalid && name.touched">
+            <span *ngIf="name.errors?.['required']">Name is required</span>
+            <span *ngIf="name.errors?.['minlength']">Name must be at least 2 characters</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Email *</label>
+          <input
+            type="email"
+            name="email"
+            [(ngModel)]="user.email"
+            #email="ngModel"
+            required
+            email
+            [class.error]="email.invalid && email.touched"
+          >
+          <div class="error" *ngIf="email.invalid && email.touched">
+            <span *ngIf="email.errors?.['required']">Email is required</span>
+            <span *ngIf="email.errors?.['email']">Invalid email format</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Age *</label>
+          <input
+            type="number"
+            name="age"
+            [(ngModel)]="user.age"
+            #age="ngModel"
+            required
+            min="18"
+            max="100"
+            [class.error]="age.invalid && age.touched"
+          >
+          <div class="error" *ngIf="age.invalid && age.touched">
+            <span *ngIf="age.errors?.['required']">Age is required</span>
+            <span *ngIf="age.errors?.['min']">Must be at least 18</span>
+            <span *ngIf="age.errors?.['max']">Must be less than 100</span>
+          </div>
+        </div>
+
+        <button type="submit" [disabled]="userForm.invalid">
+          Submit Template Form
+        </button>
+      </form>
+
+      <div class="result" *ngIf="templateSubmitted">
+        <h3>Submitted Data:</h3>
+        <pre>{{ user | json }}</pre>
+      </div>
+    </div>

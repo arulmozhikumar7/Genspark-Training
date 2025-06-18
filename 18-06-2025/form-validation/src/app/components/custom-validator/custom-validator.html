@@ -1,0 +1,113 @@
+
+    <div class="form-card">
+      <h2>Custom Validators</h2>
+      <p class="description">Demonstrates custom validation logic with detailed error messages</p>
+      
+      <form [formGroup]="customForm" (ngSubmit)="onSubmit()">
+        <div class="field">
+          <label>Username *</label>
+          <input
+            type="text"
+            formControlName="username"
+            placeholder="Enter unique username"
+            [class.error]="isFieldInvalid('username')"
+          >
+          <div class="error" *ngIf="isFieldInvalid('username')">
+            <span *ngIf="customForm.get('username')?.errors?.['required']">Username is required</span>
+            <span *ngIf="customForm.get('username')?.errors?.['usernameTooShort']">
+              Username must be at least {{ customForm.get('username')?.errors?.['usernameTooShort']?.minLength }} characters
+            </span>
+            <span *ngIf="customForm.get('username')?.errors?.['usernameInvalidChars']">
+              Username can only contain letters, numbers, hyphens, and underscores
+            </span>
+            <span *ngIf="customForm.get('username')?.errors?.['usernameReserved']">
+              Username "{{ customForm.get('username')?.errors?.['usernameReserved']?.value }}" is reserved
+            </span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Age *</label>
+          <input
+            type="number"
+            formControlName="age"
+            placeholder="Enter age (13-65)"
+            [class.error]="isFieldInvalid('age')"
+          >
+          <div class="error" *ngIf="isFieldInvalid('age')">
+            <span *ngIf="customForm.get('age')?.errors?.['required']">Age is required</span>
+            <span *ngIf="customForm.get('age')?.errors?.['invalidAge']">Please enter a valid age</span>
+            <span *ngIf="customForm.get('age')?.errors?.['ageRange']">
+              Age must be between {{ customForm.get('age')?.errors?.['ageRange']?.min }} 
+              and {{ customForm.get('age')?.errors?.['ageRange']?.max }}
+            </span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Password *</label>
+          <input
+            type="password"
+            formControlName="password"
+            placeholder="Strong password required"
+            [class.error]="isFieldInvalid('password')"
+          >
+          <div class="password-strength" *ngIf="customForm.get('password')?.value">
+            <div class="strength-requirements">
+              <div class="requirement" 
+                   [class.met]="customForm.get('password')?.errors?.['strongPassword']?.hasUpperCase !== false">
+                ✓ Uppercase letter
+              </div>
+              <div class="requirement" 
+                   [class.met]="customForm.get('password')?.errors?.['strongPassword']?.hasLowerCase !== false">
+                ✓ Lowercase letter
+              </div>
+              <div class="requirement" 
+                   [class.met]="customForm.get('password')?.errors?.['strongPassword']?.hasNumeric !== false">
+                ✓ Number
+              </div>
+              <div class="requirement" 
+                   [class.met]="customForm.get('password')?.errors?.['strongPassword']?.hasSpecialChar !== false">
+                ✓ Special character
+              </div>
+              <div class="requirement" 
+                   [class.met]="customForm.get('password')?.errors?.['strongPassword']?.hasValidLength !== false">
+                ✓ At least 8 characters
+              </div>
+            </div>
+          </div>
+          <div class="error" *ngIf="isFieldInvalid('password')">
+            <span *ngIf="customForm.get('password')?.errors?.['required']">Password is required</span>
+            <span *ngIf="customForm.get('password')?.errors?.['strongPassword']">
+              Password must meet all requirements above
+            </span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Confirm Password *</label>
+          <input
+            type="password"
+            formControlName="confirmPassword"
+            placeholder="Confirm your password"
+            [class.error]="isFieldInvalid('confirmPassword') || customForm.errors?.['passwordMismatch']"
+          >
+          <div class="error" *ngIf="isFieldInvalid('confirmPassword') || customForm.errors?.['passwordMismatch']">
+            <span *ngIf="customForm.get('confirmPassword')?.errors?.['required']">Please confirm your password</span>
+            <span *ngIf="customForm.get('confirmPassword')?.errors?.['passwordMismatch'] || customForm.errors?.['passwordMismatch']">
+              Passwords do not match
+            </span>
+          </div>
+        </div>
+
+        <button type="submit" [disabled]="customForm.invalid">
+          Submit Custom Form
+        </button>
+      </form>
+
+      <div class="result" *ngIf="customSubmitted">
+        <h3>Submitted Data:</h3>
+        <pre>{{ getSubmittedData() | json }}</pre>
+      </div>
+    </div>
+  

@@ -1,0 +1,66 @@
+<div class="form-card">
+      <h2>Reactive Form</h2>
+      
+      <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+        <div class="field">
+          <label>Name *</label>
+          <input
+            type="text"
+            formControlName="name"
+            [class.error]="isFieldInvalid('name')"
+          >
+          <div class="error" *ngIf="isFieldInvalid('name')">
+            <span *ngIf="userForm.get('name')?.errors?.['required']">Name is required</span>
+            <span *ngIf="userForm.get('name')?.errors?.['minlength']">Name must be at least 2 characters</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Email *</label>
+          <input
+            type="email"
+            formControlName="email"
+            [class.error]="isFieldInvalid('email')"
+          >
+          <div class="error" *ngIf="isFieldInvalid('email')">
+            <span *ngIf="userForm.get('email')?.errors?.['required']">Email is required</span>
+            <span *ngIf="userForm.get('email')?.errors?.['email']">Invalid email format</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Phone</label>
+          <input
+            type="tel"
+            formControlName="phone"
+            [class.error]="isFieldInvalid('phone')"
+          >
+          <div class="error" *ngIf="isFieldInvalid('phone')">
+            <span *ngIf="userForm.get('phone')?.errors?.['pattern']">Invalid phone format</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Age *</label>
+          <input
+            type="number"
+            formControlName="age"
+            [class.error]="isFieldInvalid('age')"
+          >
+          <div class="error" *ngIf="isFieldInvalid('age')">
+            <span *ngIf="userForm.get('age')?.errors?.['required']">Age is required</span>
+            <span *ngIf="userForm.get('age')?.errors?.['min']">Must be at least 18</span>
+            <span *ngIf="userForm.get('age')?.errors?.['max']">Must be less than 100</span>
+          </div>
+        </div>
+
+        <button type="submit" [disabled]="userForm.invalid">
+          Submit Reactive Form
+        </button>
+      </form>
+
+      <div class="result" *ngIf="reactiveSubmitted">
+        <h3>Submitted Data:</h3>
+        <pre>{{ userForm.value | json }}</pre>
+      </div>
+    </div>
