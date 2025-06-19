@@ -1,0 +1,38 @@
+<div class="filter-bar">
+  <!-- Search Input -->
+  <input
+    #searchInput
+    type="text"
+    placeholder="Search by username..."
+    class="filter-input"
+  />
+
+  <!-- Role Filter -->
+  <select #roleSelect class="filter-select">
+    
+    <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
+  </select>
+</div>
+
+<!-- User Table -->
+<table class="user-table" *ngIf="(filteredUsers$ | async)?.length; else noUsers">
+  <thead>
+    <tr>
+      <th>Username</th>
+      <th>Email</th>
+      <th>Role</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of filteredUsers$ | async">
+      <td>{{ user.username }}</td>
+      <td>{{ user.email }}</td>
+      <td>{{ user.role }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- No Users Template -->
+<ng-template #noUsers>
+  <p class="no-users">No users found.</p>
+</ng-template>
