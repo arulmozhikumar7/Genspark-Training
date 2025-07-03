@@ -1,0 +1,87 @@
+
+
+<div class="px-4 sm:px-6 py-6 bg-[var(--bg)] text-[var(--text-primary)] h-full">
+  <div *ngIf="loading()" class="text-center text-sm text-gray-500">Loading...</div>
+  <div *ngIf="error()" class="text-center text-red-600">{{ error() }}</div>
+<div class="flex justify-between items-center mb-4">
+  <h2 class="text-lg font-semibold">Categories</h2>
+  <button (click)="openAddModal()" class="bg-blue-600  px-4 py-1 rounded hover:bg-blue-700 transition">
+    + Add Category
+  </button>
+</div>
+
+<!-- Add Category Modal -->
+<div *ngIf="isAddModalOpen()" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-[var(--bg)]  rounded-lg shadow-lg p-6 w-[90%] sm:w-96">
+    <h3 class="text-lg font-semibold mb-4">Add Category</h3>
+    <form #catForm="ngForm" (ngSubmit)="onSubmitNewCategory(catForm)">
+      <div class="mb-4">
+        <label class="block mb-1 text-sm font-medium">Category Name</label>
+      <input
+  name="name"
+  required
+  [(ngModel)]="newCategoryName"
+  class="w-full border border-gray-300 p-2 rounded text-sm"
+  placeholder="Enter category name"
+/>
+
+        <div *ngIf="catForm.submitted && catForm.controls['name']?.invalid" class="text-red-600 text-xs mt-1">
+          Category name is required
+        </div>
+      </div>
+      <div class="flex justify-end gap-2">
+        <button type="button" (click)="closeAddModal()" class="bg-gray-500 text-white px-3 py-1 rounded hover:bg-gray-600">
+          Cancel
+        </button>
+        <button type="submit" [disabled]="catForm.invalid" class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700">
+          Add
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+  <div *ngIf="categories().length > 0; else noData">
+    <div class="overflow-x-auto border border-[var(--border)] rounded-lg shadow-sm">
+      <table class="min-w-full divide-y divide-[var(--border)] text-sm">
+        <thead class="bg-[var(--surface)] text-[var(--text-primary)] uppercase text-xs tracking-wider">
+          <tr>
+            <th class="px-4 py-3 text-left">Name</th>
+            <th class="px-4 py-3 text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="bg-[var(--bg)] divide-y divide-[var(--border)]">
+          <tr *ngFor="let cat of categories()">
+   <ng-container *ngIf="editingCategory() as editingCat; else viewRow">
+  <ng-container *ngIf="editingCat.id === cat.id; else viewRow">
+    <td class="px-4 py-2">
+      <input [(ngModel)]="editingCat.name" class="w-full p-1 border border-[var(--border)] bg-[var(--surface)] text-[var(--text-primary)] rounded text-sm" />
+    </td>
+    <td class="px-4 py-2 text-center">
+      <div class="flex justify-center gap-2">
+        <button (click)="onSaveEdit()" class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 transition">💾</button>
+        <button (click)="onCancelEdit()" class="bg-gray-500 text-white px-3 py-1 rounded hover:bg-gray-600 transition">✖️</button>
+      </div>
+    </td>
+  </ng-container>
+</ng-container>
+
+            <ng-template #viewRow>
+              <td class="px-4 py-2">{{ cat.name }}</td>
+              <td class="px-4 py-2 text-center">
+                <div class="flex justify-center gap-2">
+                  <button (click)="onEdit(cat)" class="text-blue-600 hover:text-blue-800 transition">✏️</button>
+                  <button (click)="onDelete(cat.id)" class="text-red-600 hover:text-red-800 transition">🗑️</button>
+                </div>
+              </td>
+            </ng-template>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <ng-template #noData>
+    <p class="text-center italic text-sm text-gray-400 py-24">No categories found.</p>
+  </ng-template>
+</div>

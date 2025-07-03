@@ -1,0 +1,11 @@
+<!-- 🔔 Budget Alerts -->
+<div class="fixed top-4 right-4 z-50 space-y-2 w-96" *ngIf="alerts$ | async as alerts">
+  <div *ngFor="let alert of alerts" class="p-4 rounded-md shadow border border-yellow-400 bg-yellow-100 text-yellow-800">
+    <div class="font-semibold mb-1">📢 {{ alert.message }}</div>
+    <div class="text-sm">
+      <div><strong>Budget:</strong> {{ alert.name }}</div>
+      <div><strong>Category:</strong> {{ alert.categoryName }}</div>
+      <div><strong>Used:</strong> ₹{{ alert.usedAmount }} / ₹{{ alert.limitAmount }} ({{ alert.usedPercentage }}%)</div>
+    </div>
+  </div>
+</div>

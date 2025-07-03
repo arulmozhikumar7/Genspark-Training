@@ -1,0 +1,101 @@
+<div *ngIf="exportEnabled; else noAccess">
+  <div class="p-4 sm:p-6 bg-[var(--bg)] text-[var(--text-primary)] min-h-screen">
+    <h2 class="text-xl sm:text-2xl font-semibold mb-4">📊 Expense Report</h2>
+
+    <!-- Quick filter buttons -->
+    <div class="flex flex-wrap gap-2 mb-6">
+      <button 
+        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition"
+        (click)="applyMonthlyReport()"
+      >
+        📅 Monthly Report
+      </button>
+      <ng-container *ngFor="let week of [1,2,3,4]">
+        <button 
+          class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-medium transition"
+          (click)="applyWeekReport(week)"
+        >
+          Week {{ week }}
+        </button>
+      </ng-container>
+    </div>
+
+    <!-- Filter Controls -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+      <!-- Category -->
+      <div>
+        <label class="block mb-1 text-sm font-medium">Category</label>
+        <select 
+          [(ngModel)]="filters.categoryId" 
+          class="w-full px-3 py-2 bg-[var(--surface)] border border-[var(--border)] rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[var(--button)]"
+        >
+          <option value="">All</option>
+          <option *ngFor="let cat of categories$ | async" [value]="cat.id">{{ cat.name }}</option>
+        </select>
+      </div>
+
+      <!-- Min Amount -->
+      <div>
+        <label class="block mb-1 text-sm font-medium">Min Amount</label>
+        <input 
+          type="number" 
+          [(ngModel)]="filters.minAmount" 
+          class="w-full px-3 py-2 bg-[var(--surface)] border border-[var(--border)] rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[var(--button)]"
+        />
+      </div>
+
+      <!-- Max Amount -->
+      <div>
+        <label class="block mb-1 text-sm font-medium">Max Amount</label>
+        <input 
+          type="number" 
+          [(ngModel)]="filters.maxAmount" 
+          class="w-full px-3 py-2 bg-[var(--surface)] border border-[var(--border)] rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[var(--button)]"
+        />
+      </div>
+
+      <!-- From Date -->
+      <div>
+        <label class="block mb-1 text-sm font-medium">From Date</label>
+        <input 
+          type="date" 
+          [(ngModel)]="filters.fromDate" 
+          class="w-full px-3 py-2 bg-[var(--surface)] border border-[var(--border)] rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[var(--button)]"
+        />
+      </div>
+
+      <!-- To Date -->
+      <div>
+        <label class="block mb-1 text-sm font-medium">To Date</label>
+        <input 
+          type="date" 
+          [(ngModel)]="filters.toDate" 
+          class="w-full px-3 py-2 bg-[var(--surface)] border border-[var(--border)] rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[var(--button)]"
+        />
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex flex-wrap gap-4">
+      <button 
+        class="bg-[var(--button)] hover:bg-[var(--button-hover)] text-white px-5 py-2.5 rounded-md text-sm font-medium transition"
+        (click)="exportReport()"
+      >
+        ⬇️ Export CSV
+      </button>
+      <button 
+        class="bg-gray-400 hover:bg-gray-500 text-white px-5 py-2.5 rounded-md text-sm font-medium transition"
+        (click)="resetFilters()"
+      >
+        Reset
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- No Access Message -->
+<ng-template #noAccess>
+  <div class="p-6 text-center text-red-600 dark:text-red-400 text-lg font-semibold">
+    ⚠️ Service Currently Not Available
+  </div>
+</ng-template>

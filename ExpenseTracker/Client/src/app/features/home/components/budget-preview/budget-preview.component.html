@@ -1,0 +1,73 @@
+<div class="p-4 rounded-xl shadow-sm border border-[var(--border)] bg-[var(--surface)] flex flex-col">
+  <!-- Header -->
+  <div class="flex justify-between items-center mb-2">
+    <h2 class="text-base font-semibold text-[var(--text-primary)]">Budgets</h2>
+    <a
+      routerLink="/budget"
+      class="text-xs font-medium text-[var(--button)] hover:underline"
+    >
+      View all
+    </a>
+  </div>
+
+  <!-- Loading -->
+  <ng-container *ngIf="loading$ | async; else budgetList">
+    <p class="text-sm text-[var(--text-secondary)]">Loading...</p>
+  </ng-container>
+
+  <!-- Budget List -->
+  <ng-template #budgetList>
+    <ng-container *ngIf="(budgets$ | async)?.length; else noBudgets">
+      <ul class="space-y-4 mt-4">
+        <li
+          *ngFor="let budget of budgets$ | async | slice:0:3"
+          class="text-sm pb-3 border-b border-[var(--border)] last:border-0"
+        >
+          <div class="flex justify-between items-start">
+            <div>
+              <div class="flex items-center gap-1 font-medium text-[var(--text-primary)]">
+                {{ budget.name }}
+                <ng-container *ngIf="(budget.balanceAmount / budget.limitAmount) < 0.1">
+                  ⚠️
+                </ng-container>
+              </div>
+              <div class="text-xs text-[var(--text-secondary)]">
+                {{ budget.startDate | date: 'MMM d, y' }} – {{ budget.endDate | date: 'MMM d, y' }}
+              </div>
+            </div>
+
+            <div class="text-right font-semibold text-[var(--expense)] whitespace-nowrap">
+              {{ budget.limitAmount | currency:'INR' }}
+            </div>
+          </div>
+
+          <!-- Progress Bar -->
+          <div class="mt-2 relative group">
+            <div class="h-2 w-full bg-green-400 rounded overflow-hidden">
+              <div
+                class="h-full bg-rose-500 transition-all duration-300"
+                [ngStyle]="{
+                  width: ((budget.limitAmount - budget.balanceAmount) / budget.limitAmount * 100) + '%'
+                }"
+              ></div>
+            </div>
+
+            <!-- Tooltip -->
+            <div
+              class="absolute left-1/2 -translate-x-1/2 -top-8 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200
+                     bg-gray-400 text-white text-xs px-2 py-1 rounded shadow whitespace-nowrap pointer-events-none"
+            >
+              Spent: {{ budget.limitAmount - budget.balanceAmount | currency }} /
+              Remaining: {{ budget.balanceAmount | currency }}
+            </div>
+          </div>
+        </li>
+      </ul>
+    </ng-container>
+
+    <!-- No Budgets -->
+    <ng-template #noBudgets>
+      <p class="text-sm text-[var(--text-secondary)]">No budgets found.</p>
+    </ng-template>
+  </ng-template>
+</div>

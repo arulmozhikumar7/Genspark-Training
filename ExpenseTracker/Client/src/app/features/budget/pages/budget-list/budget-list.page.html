@@ -1,0 +1,166 @@
+<!-- Filters Section -->
+<div class="min-h-screen flex flex-col bg-[var(--bg)] text-[var(--text-primary)]" id="budget-list">
+  <!-- Filters Section -->
+<div class="px-4 sm:px-6 py-4 bg-[var(--surface)] flex flex-wrap gap-4 items-center border-b border-[var(--border)] shadow-sm" id="filters-section">
+  <input
+    type="text"
+    placeholder="Search by name"
+    (ngModelChange)="onSearchChange($event)"
+    [ngModel]="filters.search"
+    id="search-input"
+    class="px-3 py-2 border border-[var(--border)] bg-[var(--bg)] text-[var(--text-primary)] text-sm rounded-md w-full sm:w-48 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+  />
+
+  <select
+    (ngModelChange)="onCategoryChange($event)"
+    [ngModel]="filters.categoryId"
+    id="category-select"
+    class="px-3 py-2 border border-[var(--border)] bg-[var(--bg)] text-[var(--text-primary)] text-sm rounded-md w-full sm:w-48 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+  >
+    <option [ngValue]="undefined">All Categories</option>
+    <option *ngFor="let cat of (categories$ | async)" [ngValue]="cat.id">{{ cat.name }}</option>
+  </select>
+
+  <select
+    [(ngModel)]="filters.month"
+    (ngModelChange)="onMonthChange($event)"
+    id="month-select"
+    class="px-3 py-2 border border-[var(--border)] bg-[var(--bg)] text-[var(--text-primary)] text-sm rounded-md w-full sm:w-40 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+  >
+    <option [ngValue]="undefined">All Months</option>
+    <option *ngFor="let month of months" [ngValue]="month.value">{{ month.name }}</option>
+  </select>
+
+  <select
+    [(ngModel)]="filters.year"
+    (ngModelChange)="onYearChange($event)"
+    id="year-select"
+    class="px-3 py-2 border border-[var(--border)] bg-[var(--bg)] text-[var(--text-primary)] text-sm rounded-md w-full sm:w-40 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+  >
+    <option [ngValue]="undefined">All Years</option>
+    <option *ngFor="let y of years" [ngValue]="y">{{ y }}</option>
+  </select>
+
+  <div class="flex gap-2 flex-wrap">
+    <button
+      (click)="resetFilters()"
+      id="reset-button"
+      class="px-4 py-2 bg-red-600 text-white text-sm rounded-md hover:bg-red-700 focus:ring-2 focus:ring-red-400 transition"
+    >
+      Reset
+    </button>
+
+    <button
+      (click)="openBudgetModal()"
+      id="budget-add"
+      class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 focus:ring-2 focus:ring-blue-400 transition"
+    >
+      ➕ Add Budget
+    </button>
+  </div>
+</div>
+
+<!-- Budget Modal -->
+<app-add-budget-modal *ngIf="showAddBudget" (close)="closeBudgetModal()"></app-add-budget-modal>
+
+<!-- Table Section -->
+<div class="px-4 sm:px-6 pb-10 pt-4 bg-[var(--bg)] text-[var(--text-primary)] h-full flex-1 overflow-auto">
+  <div *ngIf="loading$ | async" class="text-[var(--text-primary)] opacity-50">Loading...</div>
+<div *ngIf="error$ | async as error" class="text-red-600 dark:text-red-400 text-center">
+  {{ getFriendlyErrorMessage(error) }}
+</div>
+
+
+  <div *ngIf="budgets$ | async as budgets">
+    <div *ngIf="budgets.length > 0; else noBudgets" class="overflow-x-auto rounded-lg shadow border border-[var(--border)]" >
+      <table class="min-w-full divide-y divide-[var(--border)] text-sm" id="budget-table" >
+        <thead class="bg-[var(--surface)] text-[var(--text-primary)] uppercase text-xs tracking-wider" >
+          <tr>
+            <th class="px-4 py-3 text-left">Name</th>
+            <th class="px-4 py-3 text-left">Category</th>
+            <th class="px-4 py-3 text-right">Limit (₹)</th>
+            <th class="px-4 py-3 text-right">Balance (₹)</th>
+            <th class="px-4 py-3 text-center">Start</th>
+            <th class="px-4 py-3 text-center">End</th>
+            <th class="px-4 py-3 text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="bg-[var(--bg)] divide-y divide-[var(--border)]">
+          <tr *ngFor="let budget of budgets">
+            <ng-container *ngIf="editingBudget && editingBudget.id === budget.id; else viewRow">
+              <td class="px-4 py-2">
+                <input [(ngModel)]="editingBudget.name" class="w-full p-1 border border-[var(--border)] bg-[var(--surface)] text-[var(--text-primary)] rounded text-sm" />
+              </td>
+              <td class="px-4 py-2">{{ budget.categoryName }}</td>
+              <td class="px-4 py-2">
+                <input type="number" [(ngModel)]="editingBudget.limitAmount" class="w-full p-1 border border-[var(--border)] text-right bg-[var(--surface)] text-[var(--text-primary)] rounded text-sm" />
+              </td>
+              <td class="px-4 py-2 text-right">{{ budget.balanceAmount | currency: 'INR' }}</td>
+              <td class="px-4 py-2 text-center">
+                <input type="date" [(ngModel)]="editingBudget.startDate" class="w-full p-1 border border-[var(--border)] bg-[var(--surface)] text-[var(--text-primary)] rounded text-sm" />
+              </td>
+              <td class="px-4 py-2 text-center">
+                <input type="date" [(ngModel)]="editingBudget.endDate" class="w-full p-1 border border-[var(--border)] bg-[var(--surface)] text-[var(--text-primary)] rounded text-sm" />
+              </td>
+              <td class="px-4 py-2 text-center">
+                <div class="flex justify-center gap-2">
+                  <button (click)="onUpdateBudget(editingBudget)" class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 transition">💾</button>
+                  <button (click)="onCancelEdit()" class="bg-gray-500 text-white px-3 py-1 rounded hover:bg-gray-600 transition">✖️</button>
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-template #viewRow>
+            <td class="px-4 py-2" id="budget-detail">
+  <a [routerLink]="['/budgets', budget.id]">{{ budget.name || '-' }}</a>
+</td>
+              <td class="px-4 py-2">{{ budget.categoryName }}</td>
+              <td class="px-4 py-2 text-right">{{ budget.limitAmount | currency: 'INR' }}</td>
+              <td class="px-4 py-2 text-right"
+                [ngClass]="{
+                  'text-green-600': budget.balanceAmount >= 0,
+                  'text-red-600': budget.balanceAmount < 0
+                }"
+              >
+                {{ budget.balanceAmount | currency: 'INR' }}
+              </td>
+              <td class="px-4 py-2 text-center">{{ budget.startDate | date: 'mediumDate' }}</td>
+              <td class="px-4 py-2 text-center">{{ budget.endDate | date: 'mediumDate' }}</td>
+              <td class="px-4 py-2 text-center">
+                <div class="flex justify-center gap-2">
+                  <button (click)="onEdit(budget)" class="text-blue-600 hover:text-blue-800 transition" id="budget-edit">✏️</button>
+                  <button (click)="onDelete(budget.id)" class="text-red-600 hover:text-red-800 transition" id="budget-delete">🗑️</button>
+                </div>
+              </td>
+            </ng-template>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ng-template #noBudgets>
+      <p class="text-[var(--text-primary)] opacity-60 italic py-24 text-center">No budgets found.</p>
+    </ng-template>
+  </div>
+
+  <!-- Pagination -->
+  <div class="mt-6 flex justify-center items-center gap-2 flex-wrap" *ngIf="pages.length > 1" id="pagination-controls">
+    <button (click)="onPrevPage()" [disabled]="currentPage === 1"
+      class="px-3 py-1 bg-[var(--surface)] rounded hover:bg-opacity-80 disabled:opacity-50 transition">Prev</button>
+
+    <button *ngFor="let page of pages"
+            (click)="onPageClick(page)"
+            [ngClass]="{
+              'bg-blue-600 text-white': page === currentPage,
+              'hover:bg-blue-300 dark:hover:bg-blue-700': true
+            }"
+            class="px-3 py-1 rounded transition"
+    >
+      {{ page }}
+    </button>
+
+    <button (click)="onNextPage()" [disabled]="(hasNextPage$ | async) === false"
+      class="px-3 py-1 bg-[var(--surface)] rounded hover:bg-opacity-80 disabled:opacity-50 transition">Next</button>
+  </div>
+</div>
+</div>

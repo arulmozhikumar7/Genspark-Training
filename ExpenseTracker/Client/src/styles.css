@@ -1,0 +1,33 @@
+/* styles.css */
+
+@import "tailwindcss";
+@import "ngx-toastr/toastr";
+/* 🌞 Light Mode Colors */
+:root {
+  --bg: #f9fafb; /* Tailwind's gray-50 */
+  --surface: #ffffff;
+  --text-primary: #1f2937; /* gray-900 */
+  --text-secondary: #4b5563; /* gray-600 */
+  --expense: #e11d48; /* rose-600 */
+  --expense-bg: #ffe4e6; /* rose-100 */
+  --warning: #ca8a04; /* yellow-600 */
+  --warning-bg: #fef9c3; /* yellow-100 */
+  --border: #e5e7eb; /* gray-200 */
+  --button: #e11d48;
+  --button-hover: #be123c;
+}
+
+/* 🌚 Dark Mode Overrides */
+.dark {
+  --bg: #111827; /* gray-900 */
+  --surface: #1f2937; /* gray-800 */
+  --text-primary: #f3f4f6; /* gray-100 */
+  --text-secondary: #9ca3af; /* gray-400 */
+  --expense: #fb7185; /* rose-400 */
+  --expense-bg: #881337; /* rose-900 */
+  --warning: #facc15; /* yellow-400 */
+  --warning-bg: #78350f; /* yellow-900 */
+  --border: #374151; /* gray-700 */
+  --button: #f43f5e;
+  --button-hover: #e11d48;
+}

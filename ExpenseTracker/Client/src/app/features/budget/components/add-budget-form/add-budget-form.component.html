@@ -1,0 +1,53 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-5 text-sm p-4 sm:p-6 bg-[var(--bg)] rounded-lg shadow-md">
+  <!-- Category -->
+  <div>
+    <label class="block text-[var(--text-primary)] font-medium mb-1">Category</label>
+    <select formControlName="categoryId"
+            class="w-full border border-[var(--border)] bg-[var(--surface)] text-[var(--text-primary)] p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+      <option value="">-- Select Category --</option>
+      <option *ngFor="let cat of categories$ | async" [value]="cat.id">
+        {{ cat.name }}
+      </option>
+    </select>
+    <p *ngIf="f.categoryId.touched && f.categoryId.invalid" class="text-red-500 mt-1">Category is required.</p>
+  </div>
+
+  <!-- Budget Name -->
+  <div>
+    <label class="block text-[var(--text-primary)] font-medium mb-1">Budget Name</label>
+    <input type="text" formControlName="Name"
+           class="w-full border border-[var(--border)] bg-[var(--surface)] text-[var(--text-primary)] p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+    <p *ngIf="f.Name.touched && f.Name.invalid" class="text-red-500 mt-1">Enter a Name.</p>
+  </div>
+
+  <!-- Limit Amount -->
+  <div>
+    <label class="block text-[var(--text-primary)] font-medium mb-1">Limit (₹)</label>
+    <input type="number" formControlName="limitAmount"
+           class="w-full border border-[var(--border)] bg-[var(--surface)] text-[var(--text-primary)] p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+    <p *ngIf="f.limitAmount.touched && f.limitAmount.invalid" class="text-red-500 mt-1">Enter a valid limit amount.</p>
+  </div>
+
+  <!-- Start Date -->
+  <div>
+    <label class="block text-[var(--text-primary)] font-medium mb-1">Start Date</label>
+    <input type="date" formControlName="startDate"
+           class="w-full border border-[var(--border)] bg-[var(--surface)] text-[var(--text-primary)] p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+    <p *ngIf="f.startDate.touched && f.startDate.invalid" class="text-red-500 mt-1">Start date is required.</p>
+  </div>
+
+  <!-- End Date -->
+  <div>
+    <label class="block text-[var(--text-primary)] font-medium mb-1">End Date</label>
+    <input type="date" formControlName="endDate"
+           class="w-full border border-[var(--border)] bg-[var(--surface)] text-[var(--text-primary)] p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+    <p *ngIf="f.endDate.touched && f.endDate.invalid" class="text-red-500 mt-1">End date is required.</p>
+  </div>
+
+  <!-- Submit Button -->
+  <button type="submit"
+          [disabled]="form.invalid"
+          class="w-full sm:w-auto bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition disabled:opacity-50">
+    Add Budget
+  </button>
+</form>

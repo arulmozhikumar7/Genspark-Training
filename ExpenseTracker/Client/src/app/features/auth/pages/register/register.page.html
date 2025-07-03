@@ -1,0 +1,97 @@
+<div class="min-h-screen flex items-center justify-center bg-[var(--bg)]">
+  <form
+    [formGroup]="registerForm"
+    (ngSubmit)="onSubmit()"
+    class="bg-[var(--surface)] p-6 rounded-xl shadow-md w-full max-w-md border border-[var(--border)]"
+  >
+    <h2 class="text-2xl font-semibold mb-6 text-center text-[var(--text-primary)]">
+      Create Your Account
+    </h2>
+
+    <!-- Username -->
+    <div class="mb-4">
+      <label class="block mb-1 text-sm text-[var(--text-secondary)]">Username</label>
+      <input
+        type="text"
+        formControlName="userName"
+        class="w-full p-2 border rounded-lg text-[var(--text-primary)]"
+        [class.border-[var(--expense)]]="f.userName.invalid && f.userName.touched"
+      />
+      <small *ngIf="f.userName.invalid && f.userName.touched" class="text-[var(--expense)]">
+        Username is required.
+      </small>
+    </div>
+
+    <!-- Email -->
+    <div class="mb-4">
+      <label class="block mb-1 text-sm text-[var(--text-secondary)]">Email</label>
+      <input
+        type="email"
+        formControlName="email"
+        class="w-full p-2 border rounded-lg text-[var(--text-primary)]"
+        [class.border-[var(--expense)]]="f.email.invalid && f.email.touched"
+      />
+      <small *ngIf="f.email.invalid && f.email.touched" class="text-[var(--expense)]">
+        Valid email is required.
+      </small>
+    </div>
+
+    <!-- Password -->
+    <div class="mb-4">
+      <label class="block mb-1 text-sm text-[var(--text-secondary)]">Password</label>
+      <input
+        type="password"
+        formControlName="password"
+        class="w-full p-2 border rounded-lg text-[var(--text-primary)]"
+        [class.border-[var(--expense)]]="f.password.invalid && f.password.touched"
+      />
+      <div *ngIf="f.password.touched && f.password.errors" class="text-[var(--expense)] text-sm mt-1 space-y-1">
+        <p *ngIf="f.password.errors['required']">Password is required.</p>
+        <p *ngIf="f.password.errors['minlength']">Minimum 8 characters required.</p>
+        <p *ngIf="f.password.errors['pattern']">
+          Must contain uppercase, lowercase, number, and special character.
+        </p>
+      </div>
+    </div>
+
+    <!-- Confirm Password -->
+    <div class="mb-4">
+      <label class="block mb-1 text-sm text-[var(--text-secondary)]">Confirm Password</label>
+      <input
+        type="password"
+        formControlName="confirmPassword"
+        class="w-full p-2 border rounded-lg text-[var(--text-primary)]"
+        [class.border-[var(--expense)]]="registerForm.errors?.['passwordMismatch'] && f.confirmPassword.touched"
+      />
+      <small
+        *ngIf="registerForm.errors?.['passwordMismatch'] && f.confirmPassword.touched"
+        class="text-[var(--expense)]"
+      >
+        Passwords do not match.
+      </small>
+    </div>
+
+    <!-- Server Error -->
+    <p class="text-[var(--expense)] text-sm mb-4" *ngIf="error$ | async as error">
+      {{ error }}
+    </p>
+
+    <!-- Submit Button -->
+    <button
+      type="submit"
+      class="w-full bg-[var(--button)] text-white py-2 rounded hover:bg-[var(--button-hover)] transition disabled:opacity-50"
+      [disabled]="loading$ | async"
+    >
+      <ng-container *ngIf="(loading$ | async); else btnText">Registering...</ng-container>
+      <ng-template #btnText>Register</ng-template>
+    </button>
+
+    <!-- Login Link -->
+    <p class="mt-4 text-sm text-center text-[var(--text-secondary)]">
+      Already have an account?
+      <a routerLink="/auth/login" class="text-[var(--button)] hover:underline">Login</a>
+    </p>
+  </form>
+</div>
+
+<router-outlet></router-outlet>

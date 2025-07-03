@@ -1,0 +1,53 @@
+<div class="h-screen w-full bg-[var(--bg)] text-[var(--text-primary)]">
+  <div class="h-full p-4 sm:p-6 overflow-hidden flex flex-col">
+    <!-- Title -->
+    <h2 class="text-xl sm:text-2xl font-semibold mb-4 flex items-center gap-2">
+      📢 <span>Budget Alerts</span>
+    </h2>
+
+    <!-- Table Wrapper -->
+    <div class="flex-1 overflow-auto rounded-lg border border-[var(--border)] bg-[var(--surface)] shadow-sm">
+      <ng-container *ngIf="alerts.length > 0; else noAlerts">
+        <div class="w-full overflow-x-auto">
+          <table class="min-w-full text-sm text-left">
+            <!-- Table Head -->
+            <thead class="bg-[var(--surface)] border-b border-[var(--border)] text-[var(--text-secondary)] uppercase tracking-wider text-xs">
+              <tr>
+                <th class="px-4 py-3">Name</th>
+                <th class="px-4 py-3">Category</th>
+                <th class="px-4 py-3">Used</th>
+                <th class="px-4 py-3">Limit</th>
+                <th class="px-4 py-3">Used %</th>
+                <th class="px-4 py-3">Message</th>
+                <th class="px-4 py-3">Received</th>
+              </tr>
+            </thead>
+
+            <!-- Table Body -->
+            <tbody>
+              <tr 
+                *ngFor="let alert of alerts" 
+                class="border-b border-[var(--border)] hover:bg-[var(--expense-bg)] dark:hover:bg-[var(--surface)] transition"
+              >
+                <td class="px-4 py-3 font-medium">{{ alert.name }}</td>
+                <td class="px-4 py-3">{{ alert.categoryName }}</td>
+                <td class="px-4 py-3 text-[var(--expense)] font-semibold">₹{{ alert.usedAmount }}</td>
+                <td class="px-4 py-3 text-blue-600 dark:text-blue-400">₹{{ alert.limitAmount }}</td>
+                <td class="px-4 py-3 font-bold text-[var(--warning)]">{{ alert.usedPercentage }}%</td>
+                <td class="px-4 py-3 text-red-600 dark:text-red-400">{{ alert.message }}</td>
+                <td class="px-4 py-3 text-xs text-[var(--text-secondary)]">{{ alert.receivedAt | date: 'h:mm a - dd.MM.yyyy' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </ng-container>
+
+      <!-- No Alerts Template -->
+      <ng-template #noAlerts>
+        <div class="p-6 text-center text-[var(--text-secondary)]">
+          🚫 No notifications available.
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>

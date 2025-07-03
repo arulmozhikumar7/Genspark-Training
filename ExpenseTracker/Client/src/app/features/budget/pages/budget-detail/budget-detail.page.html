@@ -1,0 +1,61 @@
+<div class="p-6 bg-[var(--bg)] text-[var(--text-primary)]" *ngIf="!loading && budget">
+  <h2 class="text-2xl font-bold mb-4">
+    Budget Details - {{ budget.name || budget.categoryName }}
+  </h2>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <!-- Summary Info -->
+    <div class="space-y-2 text-sm">
+      <div><strong>Category:</strong> {{ budget.categoryName }}</div>
+      <div><strong>Start Date:</strong> {{ budget.startDate | date: 'mediumDate' }}</div>
+      <div><strong>End Date:</strong> {{ budget.endDate | date: 'mediumDate' }}</div>
+      <div><strong>Limit Amount:</strong> {{ budget.limitAmount | currency: 'INR' }}</div>
+      <div><strong>Spent:</strong> {{ spentAmount | currency: 'INR' }}</div>
+      <div><strong>Remaining:</strong> {{ getRemainingAmount() | currency: 'INR' }}</div>
+    </div>
+
+    <!-- Pie Chart -->
+    <app-expense-pie-chart
+      [summaryData]="[
+        { categoryName: 'Spent', totalAmount: spentAmount },
+        { categoryName: 'Remaining', totalAmount: getRemainingAmount() }
+      ]"
+    ></app-expense-pie-chart>
+  </div>
+
+  <!-- Expense List -->
+  <div class="mt-8">
+    <h3 class="text-lg font-semibold mb-2">Expenses</h3>
+
+    <div class="overflow-x-auto rounded shadow">
+      <table class="min-w-full text-sm divide-y divide-[var(--border)]">
+        <thead class="bg-[var(--surface)]">
+          <tr>
+            <th class="px-4 py-2 text-left font-medium text-[var(--text-secondary)]">Description</th>
+            <th class="px-4 py-2 text-right font-medium text-[var(--text-secondary)]">Amount (₹)</th>
+            <th class="px-4 py-2 text-center font-medium text-[var(--text-secondary)]">Date</th>
+          </tr>
+        </thead>
+        <tbody class="bg-[var(--surface)] divide-y divide-[var(--border)]">
+          <tr *ngFor="let expense of expenses">
+            <td class="px-4 py-2">{{ expense.description }}</td>
+            <td class="px-4 py-2 text-right text-[var(--expense)] font-semibold">
+              {{ expense.amount | currency: 'INR' }}
+            </td>
+            <td class="px-4 py-2 text-center text-[var(--text-secondary)]">
+              {{ expense.expenseDate | date: 'mediumDate' }}
+            </td>
+          </tr>
+          <tr *ngIf="expenses.length === 0">
+            <td colspan="3" class="px-4 py-2 text-center italic text-[var(--text-secondary)]">No expenses recorded.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Loader -->
+<div *ngIf="loading" class="p-6 text-[var(--text-secondary)]">
+  Loading budget details...
+</div>

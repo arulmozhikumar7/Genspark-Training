@@ -1,0 +1,21 @@
+<div
+  [ngClass]="{
+    'relative p-4 rounded-xl shadow-sm border border-[var(--border)] bg-[var(--surface)] h-[300px] overflow-x-auto': !isFullscreen,
+    'fixed inset-0 z-40 flex items-center justify-center bg-[var(--surface)] p-4': isFullscreen
+  }"
+  class="transition-all duration-500"
+>
+  <!-- Toggle Button -->
+  <button
+    class="absolute top-2 right-2 z-50 p-1 text-sm rounded hover:scale-110 transition-transform text-[var(--text-primary)] bg-[var(--surface)]"  
+    (click)="toggleFullscreen()"
+  >
+    <span *ngIf="!isFullscreen">⛶</span>
+    <span *ngIf="isFullscreen">✕</span>
+  </button>
+
+  <!-- Chart Canvas Container -->
+  <div #chartContainer class="w-full h-full">
+    <canvas #canvas class="w-full h-full max-h-full"></canvas>
+  </div>
+</div>
