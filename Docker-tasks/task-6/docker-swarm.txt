@@ -1,0 +1,17 @@
+docker swarm init
+
+docker service create \
+  --name nginx-web \
+  --replicas 3 \
+  -p 8080:80 \
+  nginx:1.21-alpine
+
+
+To check tasks:
+
+docker service ls
+
+docker service ps nginx-web
+
+
+http://localhost:8080

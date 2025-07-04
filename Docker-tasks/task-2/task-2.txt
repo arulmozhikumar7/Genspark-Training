@@ -1,0 +1,31 @@
+Pull the image : 
+docker pull mysql:latest
+
+Run the image in a container:
+docker run -d \
+  --name task-2-container \
+  -e MYSQL_ROOT_PASSWORD=root \
+  -v task-2-volume:/var/lib/mysql \
+  -p 3306:3306 \
+  mysql:latest
+
+Access the client:
+docker exec -it task-2-container mysql -uroot -proot
+
+
+
+CREATE DATABASE taskdb;
+USE taskdb;
+
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100),
+    email VARCHAR(100),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO users (name, email) VALUES ('Arul', 'arul@example.com');
+
+SELECT * FROM users;
+
+

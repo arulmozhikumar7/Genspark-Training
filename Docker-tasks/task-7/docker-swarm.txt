@@ -1,0 +1,7 @@
+docker pull nginx:alpine
+
+docker service inspect nginx-web --pretty
+
+docker service update \
+  --image nginx:alpine \
+  nginx-web

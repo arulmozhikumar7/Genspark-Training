@@ -1,0 +1,5 @@
+docker service scale nginx-web=5
+
+
+Verification:
+docker service ls
