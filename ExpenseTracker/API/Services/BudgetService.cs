@@ -19,20 +19,29 @@ namespace ExpenseTrackerAPI.Services
             _budgetSyncService = budgetSyncService;
         }
 
-        public async Task<IEnumerable<BudgetDto>> GetAllAsync(Guid userId)
-        {
-            var budgets = await _repo.GetAllAsync(userId);
-            return budgets.Select(b => new BudgetDto
-            {
-                Id = b.Id,
-                CategoryId = b.CategoryId,
-                CategoryName = b.Category.Name,
-                LimitAmount = b.LimitAmount,
-                BalanceAmount = b.BalanceAmount,
-                StartDate = b.StartDate,
-                EndDate = b.EndDate
-            });
-        }
+        public async Task<PaginatedResponse<BudgetDto>> GetFilteredAsync(Guid userId, BudgetQueryParameters filters)
+{
+    var (budgets, total) = await _repo.GetFilteredAsync(userId, filters);
+
+    var dtoList = budgets.Select(b => new BudgetDto
+    {
+        Id = b.Id,
+        Name = b.Name,
+        CategoryId = b.CategoryId,
+        CategoryName = b.Category.Name,
+        LimitAmount = b.LimitAmount,
+        BalanceAmount = b.BalanceAmount,
+        StartDate = b.StartDate,
+        EndDate = b.EndDate
+    });
+
+    return new PaginatedResponse<BudgetDto>
+    {
+        Items = dtoList,
+        TotalCount = total
+    };
+}
+
 
         public async Task<BudgetDto?> GetByIdAsync(Guid id, Guid userId)
         {
@@ -40,6 +49,7 @@ namespace ExpenseTrackerAPI.Services
             return b == null ? null : new BudgetDto
             {
                 Id = b.Id,
+                Name = b.Name,
                 CategoryId = b.CategoryId,
                 CategoryName = b.Category.Name,
                 LimitAmount = b.LimitAmount,

@@ -176,14 +176,14 @@
   // Start SignalR and join user group
   connection.start()
     .then(() => {
-      console.log("✅ SignalR connected");
+      console.log("SignalR connected");
       return connection.invoke("JoinUserGroup", userId.toString());
     })
     .then(() => {
-      console.log("👥 Joined user group:", userId);
+      console.log("Joined user group:", userId);
     })
     .catch(err => {
-      console.error("❌ Connection error:", err);
+      console.error("Connection error:", err);
       logout();
     });
 

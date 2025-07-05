@@ -1,0 +1,6 @@
+[
+  { "id": 1, "name": "Angular Basics", "amount": 499 },
+  { "id": 2, "name": "Advanced Angular", "amount": 999 },
+  { "id": 3, "name": "RxJS Deep Dive", "amount": 799 },
+  { "id": 4, "name": "System Design", "amount": 1500}
+]

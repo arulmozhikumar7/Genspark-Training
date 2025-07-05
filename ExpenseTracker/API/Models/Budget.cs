@@ -39,8 +39,8 @@ namespace ExpenseTrackerAPI.Models
 
         public bool IsDeleted { get; set; } = false;
 
-        // public bool Notified90Percent { get; set; } = false;
-
-        // public bool NotifiedLimitExceeded { get; set; } = false;
+       public bool Notified50Percent { get; set; } = false;
+      public bool Notified90Percent { get; set; } = false;
+      public bool NotifiedLimitExceeded { get; set; } = false;
     }
 }

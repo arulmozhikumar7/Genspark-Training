@@ -21,14 +21,46 @@ namespace ExpenseTrackerAPI.Services
 
             var used = budget.LimitAmount - budget.BalanceAmount;
             var percentageUsed = (int)((used / budget.LimitAmount) * 100);
+            string? message = null;
 
-            string? message = percentageUsed switch
+            if (percentageUsed >= 50)
             {
-                >= 100 => "Budget limit exceeded!",
-                >= 90 => "90% of budget used.",
-                >= 50 => "50% of budget used.",
-                _ => null
-            };
+                if (!budget.NotifiedLimitExceeded)
+                {
+                    message = "50% of budget is used.";
+                    budget.NotifiedLimitExceeded = true;
+                }
+            }
+            else
+            {
+                budget.NotifiedLimitExceeded = false;
+            }
+
+            if (percentageUsed >= 90)
+            {
+                if (!budget.Notified90Percent)
+                {
+                    message = "90% of budget used.";
+                    budget.Notified90Percent = true;
+                }
+            }
+            else
+            {
+                budget.Notified90Percent = false;
+            }
+
+            if (percentageUsed >= 100)
+            {
+                if (!budget.Notified50Percent)
+                {
+                    message = "Budget Limit Exceeded";
+                    budget.Notified50Percent = true;
+                }
+            }
+            else
+            {
+                budget.Notified50Percent = false;
+            }
 
             if (message != null)
             {

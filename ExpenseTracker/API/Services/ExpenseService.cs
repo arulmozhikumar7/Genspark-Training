@@ -139,22 +139,29 @@ namespace ExpenseTrackerAPI.Services
             };
         }
 
-        public async Task<string> ExportCsvAsync(Guid userId, ExpenseQueryParameters parameters)
+     public async Task<string> ExportCsvAsync(Guid userId, ExpenseQueryParameters parameters)
+{
+    var (expenses, _) = await _repo.GetFilteredAsync(userId, parameters);
+
+    var dtoList = expenses
+        .Select(e => new ExpenseCsvDto
         {
-            var (expenses, _) = await _repo.GetFilteredAsync(userId, parameters);
+            ExpenseDate = e.ExpenseDate,
+            CategoryName = e.Category.Name,
+            Amount = e.Amount,
+            Description = e.Description
+        })
+        .OrderBy(e => e.ExpenseDate)
+        .ToList();
 
-            var dtoList = expenses.Select(e => new ExpenseCsvDto
-            {
-                ExpenseDate = e.ExpenseDate,
-                CategoryName = e.Category.Name,
-                Amount = e.Amount,
-                Description = e.Description
-            });
+    var csv = new CsvGenerator().GenerateExpensesCsv(dtoList);
+    return csv;
+}
 
-            var csv = new CsvGenerator().GenerateExpensesCsv(dtoList);
-            return csv;
+        public async Task<IEnumerable<CategoryExpenseSummaryDto>> GetCategorySummaryAsync(Guid userId, ExpenseQueryParameters parameters)
+        {
+            return await _repo.GetCategorySummaryAsync(userId, parameters);
         }
-
 
     }
 }

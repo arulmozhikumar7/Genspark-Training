@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Mvc.Versioning;
 using Serilog;
 using System.Text;
 using System.Threading.RateLimiting;
+using ExpenseTrackerAPI.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -60,7 +61,8 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuerSigningKey = true,
         ValidIssuer = jwtSettings["Issuer"],
         ValidAudience = jwtSettings["Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]!))
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]!)),
+        ClockSkew = TimeSpan.Zero 
     };
 });
 
@@ -136,7 +138,7 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-builder.Services.ConfigureOptions<SwaggerGenOptionsConfig>(); // custom class below 👇
+builder.Services.ConfigureOptions<SwaggerGenOptionsConfig>(); 
 
 // Controllers
 builder.Services.AddControllers();
@@ -152,6 +154,7 @@ builder.Services.AddScoped<IExpenseRepository, ExpenseRepository>();
 builder.Services.AddScoped<IReceiptRepository, ReceiptRepository>();
 builder.Services.AddScoped<IBudgetRepository, BudgetRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ITourProgressRepository, TourProgressRepository>();
 
 // Services
 builder.Services.AddScoped<IUserService, UserService>();
@@ -162,6 +165,10 @@ builder.Services.AddScoped<IBudgetService, BudgetService>();
 builder.Services.AddScoped<IExpenseBudgetSyncService, ExpenseBudgetSyncService>();
 builder.Services.AddScoped<IBudgetAlertService, BudgetAlertService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<ITourProgressService, TourProgressService>();
+
+builder.Services.Configure<FeatureFlags>(builder.Configuration.GetSection("FeatureFlags"));
+
 
 // Utilities
 builder.Services.AddScoped<TokenHelper>(sp =>

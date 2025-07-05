@@ -19,12 +19,13 @@ namespace ExpenseTrackerAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetFiltered([FromQuery] BudgetQueryParameters filters)
         {
             var userId = GetUserId();
-            var budgets = await _service.GetAllAsync(userId);
-            return Ok(ApiResponse<object>.SuccessResponse(budgets, "Budgets fetched successfully"));
+            var result = await _service.GetFilteredAsync(userId, filters);
+            return Ok(ApiResponse<object>.SuccessResponse(result, "Filtered budgets fetched successfully"));
         }
+
 
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(Guid id)

@@ -1,0 +1,36 @@
+<div class="center-container">
+  <h2>My Purchases</h2>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="purchase-form">
+    <label for="email">Email</label>
+    <input
+      type="email"
+      id="email"
+      formControlName="email"
+      placeholder="Enter your email"
+      required
+    />
+    <button type="submit" [disabled]="form.invalid">View Purchases</button>
+  </form>
+
+  @if (purchases.length > 0) {
+    <div class="purchase-history">
+      <h3>Purchase History</h3>
+      <div class="purchase-card-container">
+        @for (p of purchases; track p.paymentId) {
+          <div class="purchase-card">
+            <h4>{{ p.courseName }}</h4>
+            <p><strong>Amount:</strong> ₹{{ p.amount }}</p>
+            <p><strong>Email:</strong> {{ p.email }}</p>
+            <p><strong>Payment ID:</strong> {{ p.paymentId }}</p>
+            <p><strong>Purchased on:</strong> {{ p.timestamp | date: 'medium' }}</p>
+          </div>
+        }
+      </div>
+    </div>
+  } @else if (form.valid) {
+    <div class="no-purchases">
+      <p>No purchases found for this email.</p>
+    </div>
+  }
+</div>

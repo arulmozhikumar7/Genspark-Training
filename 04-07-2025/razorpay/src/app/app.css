@@ -1,0 +1,24 @@
+nav {
+  background-color: #f8f9fa;
+  padding: 12px 20px;
+  text-align: center;
+  border-bottom: 1px solid #e0e0e0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+nav a {
+  text-decoration: none;
+  color: #007bff;
+  font-weight: 500;
+  margin: 0 12px;
+  transition: color 0.2s ease;
+}
+
+nav a:hover {
+  color: #0056b3;
+}
+
+nav a.active {
+  font-weight: bold;
+  color: #0056b3;
+}

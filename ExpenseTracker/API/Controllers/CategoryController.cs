@@ -38,7 +38,7 @@ namespace ExpenseTrackerAPI.Controllers
 
             return Ok(ApiResponse<CategoryReadDto>.SuccessResponse(category, "Category fetched successfully"));
         }
-
+         [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CategoryCreateDto dto)
         {

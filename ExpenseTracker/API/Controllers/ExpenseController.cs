@@ -2,6 +2,8 @@ using ExpenseTrackerAPI.DTOs;
 using ExpenseTrackerAPI.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ExpenseTrackerAPI.Configurations;
+using Microsoft.Extensions.Options;
 using System.Text;
 
 namespace ExpenseTrackerAPI.Controllers
@@ -13,10 +15,12 @@ namespace ExpenseTrackerAPI.Controllers
     public class ExpenseController : ControllerBase
     {
         private readonly IExpenseService _service;
+        private readonly FeatureFlags _featureFlags;
 
-        public ExpenseController(IExpenseService service)
+        public ExpenseController(IExpenseService service, IOptions<FeatureFlags> featureFlags)
         {
             _service = service;
+            _featureFlags = featureFlags.Value;
         }
 
         [HttpGet]
@@ -126,11 +130,23 @@ namespace ExpenseTrackerAPI.Controllers
         [HttpGet("export/csv")]
         public async Task<IActionResult> ExportToCsv([FromQuery] ExpenseQueryParameters parameters)
         {
+            if (!_featureFlags.EnableCsvExport)
+            {
+                return Forbid("CSV export is currently disabled.");
+            }
             var userId = GetUserId();
             var csv = await _service.ExportCsvAsync(userId, parameters);
 
             var bytes = Encoding.UTF8.GetBytes(csv);
             return File(bytes, "text/csv", $"expenses_{DateTime.UtcNow:yyyyMMdd}.csv");
+        }
+
+        [HttpGet("summary")]
+        public async Task<IActionResult> GetSummary([FromQuery] ExpenseQueryParameters parameters)
+        {
+            var userId = GetUserId();
+            var summary = await _service.GetCategorySummaryAsync(userId, parameters);
+            return Ok(ApiResponse<object>.SuccessResponse(summary, "Expense summary fetched successfully"));
         }
 
         private Guid GetUserId()

@@ -11,5 +11,6 @@ namespace ExpenseTrackerAPI.Interfaces
         Task DeleteAsync(Guid id, Guid userId);
         Task<PaginatedResponse<ExpenseResponseDto>> GetFilteredAsync(Guid userId, ExpenseQueryParameters parameters);
         Task<string> ExportCsvAsync(Guid userId, ExpenseQueryParameters parameters);
+        Task<IEnumerable<CategoryExpenseSummaryDto>> GetCategorySummaryAsync(Guid userId, ExpenseQueryParameters parameters);
     }
 }

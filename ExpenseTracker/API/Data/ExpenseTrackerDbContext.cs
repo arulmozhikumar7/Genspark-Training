@@ -18,6 +18,7 @@ namespace ExpenseTrackerAPI.Data
         public DbSet<Receipt> Receipts { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<TourProgress> TourProgress { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
