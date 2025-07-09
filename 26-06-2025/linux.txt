@@ -1,0 +1,87 @@
+1. You have a file with permissions -rw-r--r--, and you run chmod +x file.sh. What happens?
+--------------------------------------------------------------------------------------------
+- Original permissions: -rw-r--r-- (Owner: read/write, Group: read, Others: read)
+- Command: chmod +x file.sh
+- What it does: Adds execute permission (x) to user, group, and others.
+- Resulting permissions: -rwxr-xr-x
+  (Owner: read/write/execute, Group: read/execute, Others: read/execute)
+
+2. What is the difference between `chmod 744 file.txt` and `chmod u=rwx,go=r file.txt`?
+----------------------------------------------------------------------------------------
+- `chmod 744`: Numeric mode.
+  - 7 = rwx (Owner)
+  - 4 = r   (Group)
+  - 4 = r   (Others)
+- `chmod u=rwx,go=r`: Symbolic mode.
+  - Sets user (u) to rwx
+  - Sets group (g) and others (o) to r
+- Both result in: -rwxr--r--
+- Difference: Syntax style; result is the same.
+
+3. What is the sticky bit, and when should you use it?
+-------------------------------------------------------
+- Sticky Bit (`+t`) is a permission setting on directories.
+- Allows only the owner of a file (or root) to delete or rename it within the directory.
+- Commonly used on shared directories like `/tmp` to prevent users from deleting each other’s files.
+- Example:
+  - `chmod +t /shared/dir`
+  - Permissions will look like: `drwxrwxrwt`
+
+4. You are told to give the owner full access, group only execute, and others no permissions.
+---------------------------------------------------------------------------------------------
+- Owner: read/write/execute (rwx)
+- Group: execute only (--x)
+- Others: no permissions (---)
+- Command:
+  - Symbolic: `chmod u=rwx,g=x,o= file.sh`
+  - Numeric equivalent: `chmod 701 file.sh`
+
+5. What is umask, and why is it important?
+------------------------------------------
+- `umask` (user file-creation mask) defines default permission restrictions when new files/directories are created.
+- Acts as a subtractive mask from the system's default maximum permissions:
+  - Files: 666 (rw-rw-rw-)
+  - Directories: 777 (rwxrwxrwx)
+- Ensures files/dirs aren’t overly permissive by default.
+- Example:
+  - `umask 022` means new files get `644`, new dirs get `755`.
+
+6. If the umask is 022, what are the default permissions for a new file and a new directory?
+---------------------------------------------------------------------------------------------
+- System default: files = 666, directories = 777
+- Apply umask 022:
+  - Files: 666 - 022 = 644 → rw-r--r--
+  - Directories: 777 - 022 = 755 → rwxr-xr-x
+
+7. Why is umask often set to 002 in development environments but 027 or 077 in production?
+-------------------------------------------------------------------------------------------
+- `umask 002`:
+  - Default file permissions: 664 (rw-rw-r--)
+  - Default directory permissions: 775 (rwxrwxr-x)
+  - Purpose: Encourage collaboration (group members can write)
+- `umask 027`:
+  - Files: 640, Dirs: 750
+  - Restricts access to others (secure default)
+- `umask 077`:
+  - Files: 600, Dirs: 700
+  - Owner-only access — used for sensitive environments
+- Summary:
+  - Dev: favor collaboration (002)
+  - Prod: favor security (027 or 077)
+
+8. useradd vs adduser
+----------------------
+| Feature        | useradd                            | adduser                                 |
+|----------------|------------------------------------|------------------------------------------|
+| Type           | Low-level binary                   | High-level wrapper script                |
+| Interaction    | Non-interactive                    | Interactive (asks for password, etc.)    |
+| Configurable   | Requires more manual options       | Provides sensible defaults               |
+| Portability    | Available on all Linux distros     | Not always available (depends on distro) |
+| Use Case       | Ideal for scripts or automation    | Ideal for manual user creation           |
+
+- Example `useradd`:
+  - `useradd -m -s /bin/bash username`
+  - `passwd username`
+- Example `adduser`:
+  - `adduser username` (interactive prompts)
+
