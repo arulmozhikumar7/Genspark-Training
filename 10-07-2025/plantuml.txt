@@ -1,0 +1,97 @@
+@startuml
+actor User
+participant AppUI
+participant AuthService
+participant ExpenseService
+database Database
+
+== User Authenticated ==
+User -> AppUI : Log in with email/password
+AppUI -> AuthService : authenticateUser(email, password)
+AuthService -> Database : SELECT * FROM Users WHERE email = ?
+Database --> AuthService : userRecord
+AuthService -> AppUI : authToken (if valid)
+
+== Add Expense Flow ==
+User -> AppUI : Open "Add Expense" screen
+AppUI -> User : Display form (amount, date, category, description)
+
+User -> AppUI : Fill form & click Submit
+AppUI -> ExpenseService : submitExpense(expenseData, authToken)
+
+alt Token Invalid
+    ExpenseService -> AppUI : 401 Unauthorized
+    AppUI -> User : Show "Session expired" message
+else Token Valid
+    ExpenseService -> Database : SELECT * FROM Users WHERE token = ?
+    Database --> ExpenseService : userRecord
+
+    ExpenseService -> ExpenseService : validateExpense(data)
+    alt Invalid Data
+        ExpenseService -> AppUI : Return validation error
+        AppUI -> User : Show field-specific errors
+    else Valid Data
+        ExpenseService -> Database : INSERT INTO Expenses (...)
+        Database --> ExpenseService : insertSuccess
+        ExpenseService -> AppUI : return "Expense Added"
+        AppUI -> User : Show success message / refresh list
+    end
+end
+
+@enduml
+
+
+@startuml
+' Define classes
+
+class User {
+  - userId: int
+  - name: string
+  - email: string
+  - passwordHash: string
+  - role: string << "admin" or "user" >>
+  + register(): bool
+  + login(): bool
+  + updateProfile(): void
+}
+
+class Category {
+  - categoryId: int
+  - name: string
+  + createCategory(): void
+  + updateCategory(): void
+  + deleteCategory(): void
+}
+
+class Expense {
+  - expenseId: int
+  - amount: float
+  - date: Date
+  - description: string
+  - category: Category
+  - createdBy: User
+  + addExpense(): void
+  + editExpense(): void
+  + deleteExpense(): void
+}
+
+class Budget {
+  - budgetId: int
+  - amountLimit: float
+  - category: Category
+  - timePeriod: string
+  - createdBy: User
+  + setBudget(): void
+  + updateBudget(): void
+  + isBudgetExceeded(): bool
+}
+
+' Relationships
+User "1" --> "*" Expense : creates >
+User "1" --> "*" Budget : sets >
+User "1" --> "*" Category : manages [if role == admin]
+
+Expense "1" --> "1" Category
+Budget "1" --> "1" Category
+
+@enduml
