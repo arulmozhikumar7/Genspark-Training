@@ -12,5 +12,7 @@ namespace ExpenseTrackerAPI.Interfaces
         Task<PaginatedResponse<ExpenseResponseDto>> GetFilteredAsync(Guid userId, ExpenseQueryParameters parameters);
         Task<string> ExportCsvAsync(Guid userId, ExpenseQueryParameters parameters);
         Task<IEnumerable<CategoryExpenseSummaryDto>> GetCategorySummaryAsync(Guid userId, ExpenseQueryParameters parameters);
+        Task<MonthlyExpenseComparisonSummaryDto> CompareTwoMonthsAsync(Guid userId, int year1, int month1, int year2, int month2);
+
     }
 }

@@ -1,0 +1,68 @@
+<div class="p-4 space-y-4 bg-[var(--surface)] min-h-screen shadow-lg">
+<div class="flex-col justify-between "><a routerLink="/expense">
+    <button 
+   
+      class="bg-rose-600 hover:bg-rose-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+     Back to Expenses
+    </button>
+    </a>
+  <h2 class="text-xl font-semibold text-[var(--text-primary)] mt-4">Compare Expenses</h2></div>        
+
+  <!-- Input Section -->
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <div>
+      <label class="block text-sm text-[var(--text-secondary)] mb-1">Year 1</label>
+      <select [(ngModel)]="year1" class="w-full p-2 rounded border bg-[var(--bg)] border-[var(--border)] text-[var(--text-primary)]">
+        <option *ngFor="let y of years" [value]="y">{{ y }}</option>
+      </select>
+    </div>
+    <div>
+      <label class="block text-sm text-[var(--text-secondary)] mb-1">Month 1</label>
+      <select [(ngModel)]="month1" class="w-full p-2 rounded border bg-[var(--bg)] border-[var(--border)] text-[var(--text-primary)]">
+        <option *ngFor="let m of months" [value]="m.value">{{ m.name }}</option>
+      </select>
+    </div>
+    <div>
+      <label class="block text-sm text-[var(--text-secondary)] mb-1">Year 2</label>
+      <select [(ngModel)]="year2" class="w-full p-2 rounded border bg-[var(--bg)] border-[var(--border)] text-[var(--text-primary)]">
+        <option *ngFor="let y of years" [value]="y">{{ y }}</option>
+      </select>
+    </div>
+    <div>
+      <label class="block text-sm text-[var(--text-secondary)] mb-1">Month 2</label>
+      <select [(ngModel)]="month2" class="w-full p-2 rounded border bg-[var(--bg)] border-[var(--border)] text-[var(--text-primary)]">
+        <option *ngFor="let m of months" [value]="m.value">{{ m.name }}</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Action Button -->
+  <button
+    (click)="compare()"
+    [disabled]="isLoading"
+    class="px-4 py-2 bg-[var(--button)] hover:bg-[var(--button-hover)] text-white rounded-lg shadow disabled:opacity-50"
+  >
+    <ng-container *ngIf="isLoading; else btnText">Loading...</ng-container>
+    <ng-template #btnText>Compare</ng-template>
+  </button>
+
+  <!-- Error Message -->
+  <div *ngIf="error" class="text-red-500 mt-4">{{ error }}</div>
+
+  <!-- Summary Display -->
+ <ng-container *ngIf="hasData">
+  <!-- Summary -->
+  <div class="mb-4 text-gray-300">
+    <p><strong>Total {{ monthNames[month1 - 1] }} {{ year1 }}:</strong> ₹{{ totalMonth1 }}</p>
+    <p><strong>Total {{ monthNames[month2 - 1] }} {{ year2 }}:</strong> ₹{{ totalMonth2 }}</p>
+    <p><strong>Difference:</strong> ₹{{ totalDifference }}</p>
+    <p><strong>Change:</strong> {{ totalPercentageChange }}%</p>
+  </div>
+
+  <!-- Chart -->
+  <div class="h-[400px] flex justify-center" >
+    <canvas #comparisonChart></canvas>
+  </div>
+</ng-container>
+
+</div>

@@ -4,7 +4,7 @@ import { TokenService } from './token.service';
 import { Observable } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export class HttpService {
-  private readonly baseUrl = '/api/v1';
+  private readonly baseUrl = 'http://localhost:5169/api/v1';
 
   constructor(private http: HttpClient, private tokenService: TokenService) {}
 

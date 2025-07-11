@@ -15,6 +15,7 @@ import { ExpenseReportPage } from '@features/expense-report/pages/expense-report
 
 import { categoryRoutes } from '@features/Admin/category/category.routes';
 import { RoleRedirectComponent } from '@shared/components/role-redirect.component';
+import { DashboardComponent } from '@features/dashboard/components/dashboard.component';
 
 export const routes: Routes = [
   {
@@ -33,7 +34,7 @@ export const routes: Routes = [
       { path: 'budgets/:id', component: BudgetDetailPageComponent, canActivate: [userGuardFn] },
       { path: 'notifications', component: NotificationComponent, canActivate: [userGuardFn] },
       { path: 'report', component: ExpenseReportPage, canActivate: [userGuardFn] },
-
+      { path: 'compare-expense',component:DashboardComponent,canActivate:[userGuardFn]},
      
       {
         path: 'category',

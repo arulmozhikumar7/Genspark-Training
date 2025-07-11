@@ -14,6 +14,8 @@ namespace ExpenseTrackerAPI.Interfaces
         Task DeleteAsync(Guid id, Guid userId);
         Task<(IEnumerable<Expense> Expenses, int TotalCount)> GetFilteredAsync(Guid userId, ExpenseQueryParameters parameters);
         Task<IEnumerable<CategoryExpenseSummaryDto>> GetCategorySummaryAsync(Guid userId, ExpenseQueryParameters parameters);
+        Task<IEnumerable<Expense>> GetExpensesByDateRangeAsync(Guid userId, DateTime fromDate, DateTime toDate);
+
 
     }
 

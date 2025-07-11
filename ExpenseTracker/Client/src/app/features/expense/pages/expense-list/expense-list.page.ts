@@ -40,6 +40,7 @@ import { NotificationService } from '@core/services/notification.service';
 import { driver } from 'driver.js';
 import 'driver.js/dist/driver.css';
 import { TourService } from '@core/services/tour.service';
+import { RouterModule } from '@angular/router';
 @Component({
   standalone: true,
   selector: 'app-expense-list-page',
@@ -52,7 +53,8 @@ import { TourService } from '@core/services/tour.service';
     CurrencyPipe,
     FormsModule,
     AddExpenseModalComponent,
-    ExpensePieChartComponent
+    ExpensePieChartComponent,
+    RouterModule
   ],
   templateUrl: './expense-list.page.html',
 })

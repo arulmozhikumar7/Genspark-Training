@@ -148,6 +148,31 @@ namespace ExpenseTrackerAPI.Controllers
             var summary = await _service.GetCategorySummaryAsync(userId, parameters);
             return Ok(ApiResponse<object>.SuccessResponse(summary, "Expense summary fetched successfully"));
         }
+        
+        [HttpGet("compare-months")]
+        public async Task<IActionResult> CompareTwoMonths(
+            [FromQuery] int year1,
+            [FromQuery] int month1,
+            [FromQuery] int year2,
+            [FromQuery] int month2)
+        {
+            var errors = new Dictionary<string, string[]>();
+
+            if (month1 < 1 || month1 > 12)
+                errors["month1"] = new[] { "Month1 must be between 1 and 12." };
+
+            if (month2 < 1 || month2 > 12)
+                errors["month2"] = new[] { "Month2 must be between 1 and 12." };
+
+            if (errors.Any())
+                return BadRequest(ApiResponse<object>.ErrorResponse("Invalid month inputs", errors));
+
+            var userId = GetUserId();
+
+            var result = await _service.CompareTwoMonthsAsync(userId, year1, month1, year2, month2);
+            return Ok(ApiResponse<object>.SuccessResponse(result, "Expense comparison between months fetched successfully"));
+        }
+
 
         private Guid GetUserId()
         {
