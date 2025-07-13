@@ -19,7 +19,7 @@ loadProgressFromApi(): Observable<any> {
     }),
     catchError((err) => {
       this.progressReadySubject.next(true);
-      return of(null); // avoid crashing
+      return of(null);
     })
   );
 }

@@ -18,8 +18,4 @@ export class UserService {
     localStorage.removeItem(expense_tracker_username);
   }
 
-
-
- 
-
 }

@@ -14,19 +14,19 @@ import { TokenService } from '@core/services/token.service';
 export class SidebarComponent implements OnInit {
   private store = inject(Store);
   private userService = inject(UserService);
-  private tokenService = inject(TokenService); // ✅
+  private tokenService = inject(TokenService); 
   private renderer = inject(Renderer2);
 
   userName: any = 'Guest';
   isDarkMode = false;
-  isAdmin = false; // ✅
+  isAdmin = false; 
 
   ngOnInit(): void {
     this.userName = this.userService.getUsername();
     this.isDarkMode = document.body.classList.contains('dark');
 
-    const user = this.tokenService.getUserFromToken(); // ✅
-    this.isAdmin = user?.role === 'Admin'; // ✅
+    const user = this.tokenService.getUserFromToken(); 
+    this.isAdmin = user?.role === 'Admin'; 
   }
 
   onLogout() {
