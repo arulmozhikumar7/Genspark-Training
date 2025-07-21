@@ -1,0 +1,38 @@
+// Variables
+
+PREFIX="arul"
+RESOURCE_GROUP="${PREFIX}-training-video-rg"
+LOCATION="eastus"
+
+# Resource names
+STORAGE_ACCOUNT="${PREFIX}trainingvideostorage" 
+CONTAINER_NAME="${PREFIX}-training-videos"
+
+SQL_SERVER_NAME="${PREFIX}videosql" 
+SQL_DB_NAME="${PREFIX}TrainingVideoDB"
+SQL_ADMIN_USER="sqladmin"
+SQL_ADMIN_PASS="Qwerty@123"
+
+
+// Resource Group
+
+az group create \
+    --name $RESOURCE_GROUP \
+    --location $LOCATION
+
+// Storage Account
+
+az storage account create \
+    --name $STORAGE_ACCOUNT \
+    --resource-group $RESOURCE_GROUP \
+    --location $LOCATION \
+    --sku Standard_LRS
+
+Created container in portal
+
+az sql server create \
+  --name $SQL_SERVER_NAME \
+  --resource-group $RESOURCE_GROUP \
+  --location $LOCATION \
+  --admin-user $SQL_ADMIN_USER \
+  --admin-password $SQL_ADMIN_PASS
